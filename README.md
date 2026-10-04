@@ -2,6 +2,8 @@
 
 **Personal Agentic Retrieval Operating System** (say it "PAR-oss").
 
+**A minimal, cognitive operating system that adapts to you.**
+
 PAROS is a way to turn a plain folder of markdown notes (an Obsidian vault, for example) into a personal operating system that AI agents work in: they find things, keep order, learn from every correction you make, and connect your personal knowledge with the tools you share with other people.
 
 The name is the idea:
