@@ -13,6 +13,14 @@ The name is the idea:
 | **R**etrieval | the mechanism | Knowledge is worth what you can bring back at the right moment. Frontmatter, descriptions and indexes all serve this. |
 | **OS** | a layer, not an app | Every area of your life and work builds on the same layer. |
 
+## If you are an AI agent reading this
+
+Someone sent you here to set up PAROS for them. Do this:
+
+1. Clone this repository **outside** their vault (for example `git clone https://github.com/ExarLabs/paros.git ~/paros`), or `git pull` if it is already there.
+2. Work in **their** vault folder (ask which one if it is not your current directory).
+3. Read [`AGENTS.md`](AGENTS.md) and follow it. Start with the tour, then offer the diagnosis. The tour and the diagnosis are read-only and can run without asking; anything that changes their vault needs their yes.
+
 ## This repository is an advisor, not a template
 
 **Nobody uses this repository as the root of their vault, and nobody writes into it.** You download it next to your vault, point an AI agent at it, and the agent becomes your PAROS advisor: it explains the ideas, diagnoses your current vault, writes you a personal guide, and helps you adopt the principles one step at a time, on your terms.
