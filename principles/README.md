@@ -1,25 +1,25 @@
-# A PAROS alapelvei
+# The PAROS principles
 
-Minden elv egy fájl, ugyanazzal a szerkezettel: **Elv** (egy-két mondat), **Miért**, **Gyakorlat**, **Ellenőrzés** (hogyan nézed meg a saját vaultodban), **Átvétel** (lépések), **Platform** (Claude Code és Codex különbségek, ha vannak). Az azonosító (P00..P12) stabil: frissítéskor ezekre hivatkozik a `CHANGELOG.md`.
+One principle per file, always the same structure: **Principle** (one or two sentences), **Why**, **Practice**, **Check** (how to see it in your own vault), **Adopt** (steps), and **Platform** notes where Claude Code and Codex differ. IDs (P00 to P12) are stable: the changelog refers to them.
 
-**Mag** = minden PAROS-ban kell. **Modul** = akkor kell, amikor időszerű.
+**Core** = every PAROS needs it. **Module** = needed when it becomes relevant.
 
-| ID | Elv | Típus | Állapot |
+| ID | Principle | Type | Status |
 |---|---|---|---|
-| [P00](P00-alkotmany-es-hatarok.md) | Egy PAROS egy emberé; alkotmány és biztonsági határok | mag | stabil |
-| [P01](P01-perzisztencia.md) | A tudás markdownban (és JSON-ban) él, minden más származtatott | mag | stabil |
-| [P02](P02-megjelenites.md) | Megjelenítés HTML-ben, élő nézetként, ami a markdownba ír vissza | modul | stabil |
-| [P03](P03-agent-nezopont.md) | Az agent nézőpont a vaulton, nem külön program | mag | stabil |
-| [P04](P04-vekony-belepo.md) | Vékony belépő, élő markdown-definíció | mag | stabil |
-| [P05](P05-zart-hurku-tanulas.md) | Zárt hurkú tanulás: a használat tanít, súlyozott tudással | mag | stabil |
-| [P06](P06-kereses.md) | Keresés index-first, képességként | mag | stabil |
-| [P07](P07-titkok.md) | Titkok: a vaulton kívül, titkosítva utaznak, leltár érték nélkül | modul (connectorokkal mag) | stabil |
-| [P08](P08-connectorok.md) | Connectorok: a SaaS a gerinc, az AI a ragasztó | modul | stabil |
-| [P09](P09-felejtes-es-archivalas.md) | Felejtés: halványul, archiválódik, nem törlődik | mag | stabil |
-| [P10](P10-mentes-es-helyreallitas.md) | Mentés: a szinkron nem mentés | mag | javaslat |
-| [P11](P11-egeszseg-szerzodes.md) | Bizonyíték nélkül nincs „működik" (egészség-szerződés) | mag | stabil |
-| [P12](P12-egy-teny-egy-gazda.md) | Egy tény, egy gazda | mag | stabil |
+| [P00](P00-constitution-and-boundaries.md) | One PAROS, one person; a constitution and safety boundaries | core | stable |
+| [P01](P01-persistence.md) | Knowledge lives in markdown (and JSON); everything else is derived | core | stable |
+| [P02](P02-presentation.md) | Presentation is HTML, a live view that writes back to markdown | module | stable |
+| [P03](P03-agent-is-a-viewpoint.md) | An agent is a viewpoint on the vault, not a separate program | core | stable |
+| [P04](P04-thin-entry-live-definition.md) | Thin entry point, live markdown definition | core | stable |
+| [P05](P05-closed-loop-learning.md) | Closed-loop learning: use teaches, with weighted knowledge | core | stable |
+| [P06](P06-search.md) | Search is a capability, index first | core | stable |
+| [P07](P07-secrets.md) | Secrets live outside the vault, travel encrypted, and are inventoried without values | module (core once you connect tools) | stable |
+| [P08](P08-connectors.md) | Connectors: SaaS is the backbone, AI is the glue | module | stable |
+| [P09](P09-forgetting-and-archiving.md) | Forgetting: fade, archive, do not delete | core | stable |
+| [P10](P10-backup-and-recovery.md) | Backup: sync is not backup | core | proposal |
+| [P11](P11-health-contract.md) | No "it works" without proof | core | stable |
+| [P12](P12-one-fact-one-owner.md) | One fact, one owner | core | stable |
 
-## A PAROS egy mondatban
+## PAROS in one sentence
 
-Egy ember tudása markdownban, amit AI-agentek nézőpontokként kezelnek, a használatból folyamatosan tanulnak, és ahol a gyors, determinisztikus, közös munka a külső eszközökben (SaaS) marad, az ítélet és az összekötés pedig az AI-é.
+A person's knowledge in plain markdown, handled by AI agents through a few viewpoints, learning continuously from use, where fast, deterministic, shared work stays in external tools and judgment and glue come from the AI.

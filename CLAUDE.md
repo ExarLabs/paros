@@ -1,3 +1,3 @@
 @AGENTS.md
 
-A PAROS-referencia agent-belépője az `AGENTS.md`; ez a fájl csak a Claude Code kedvéért létezik, és azt importálja.
+This file exists for Claude Code only; the PAROS advisor's entry point is `AGENTS.md`.

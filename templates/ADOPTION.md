@@ -1,34 +1,34 @@
 ---
 title: ADOPTION
-date: ÉÉÉÉ-HH-NN
+date: YYYY-MM-DD
 status: active
-description: A vault PAROS-átállásának listája és naplója: melyik alapelv hogyan került át, mi vár még, és milyen referencia-verzió alapján.
-reference_version: 0.1.0
-reference_path: ~/paros-reference
+description: The vault's PAROS adoption checklist and log: how each principle was adopted, what is still open, and which reference version it is based on.
+reference_version: 0.2.0
+reference_path: ~/paros
 ---
 
-# PAROS-átállás
+# PAROS adoption
 
-## Lista
+## Checklist
 
-| ID | Elv | Állapot | Teendő ennél a vaultnál |
+| ID | Principle | Status | What it means for this vault |
 |---|---|---|---|
-| P00 | Alkotmány és határok | átvehető | |
-| P01 | Perzisztencia | átvehető | |
-| P02 | Megjelenítés | később | |
-| P03 | Agent = nézőpont | átvehető | |
-| P04 | Vékony belépő | átvehető | |
-| P05 | Zárt hurkú tanulás | átvehető | |
-| P06 | Keresés | átvehető | |
-| P07 | Titkok | később | |
-| P08 | Connectorok | később | |
-| P09 | Felejtés és archiválás | átvehető | |
-| P10 | Mentés | átvehető | |
-| P11 | Egészség-szerződés | átvehető | |
-| P12 | Egy tény, egy gazda | átvehető | |
+| P00 | Constitution and boundaries | to adopt | |
+| P01 | Persistence | to adopt | |
+| P02 | Presentation | later | |
+| P03 | Agent is a viewpoint | to adopt | |
+| P04 | Thin entry, live definition | to adopt | |
+| P05 | Closed-loop learning | to adopt | |
+| P06 | Search | to adopt | |
+| P07 | Secrets | later | |
+| P08 | Connectors | later | |
+| P09 | Forgetting and archiving | to adopt | |
+| P10 | Backup and recovery | to adopt | |
+| P11 | Health contract | to adopt | |
+| P12 | One fact, one owner | to adopt | |
 
-Állapotok: `megvan`, `átvehető`, `folyamatban`, `kész`, `adaptálva` (a felhasználó saját változata, indoklással), `később`, `nem kell`.
+Statuses: `present`, `to adopt`, `in progress`, `done`, `adapted` (the owner's own version, with a reason), `later`, `not needed`.
 
-## Napló
+## Log
 
-- ÉÉÉÉ-HH-NN: felmérés kész (`PAROS/SURVEY.md`), lista jóváhagyva.
+- YYYY-MM-DD: diagnosis done (`PAROS/DIAGNOSIS.md`), checklist approved.

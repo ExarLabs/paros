@@ -1,14 +1,16 @@
-# Kitek: opcionális referencia-implementációk
+# Kits: optional reference implementations
 
-A kit egy működő példa egy elvhez. **Nem kötelező**, és nem másoljuk vakon: az agent elolvassa, és a felhasználó vaultjához igazítva építi újra (vagy átveszi és adaptálja). A kód eldobható; az elv és az ellenőrzés a lényeg.
+A kit is a working example of a principle. **Optional,** and never copied blindly: the agent reads it and rebuilds it for the person's vault (or adopts and adapts it). The code is disposable; the principle and its check are what matter.
 
-| Kit | Elv | Mit ad | Állapot |
+| Kit | Principle | What it gives | Status |
 |---|---|---|---|
-| `search` | P06 | SQLite FTS5 index a vaultból, rangsorolt keresés 2-4 szótőre, read-only skill | tervezett |
-| `cognition` | P05 | súlyozott tanult szabályok, használat-jelölés, kognitív ciklus, riport hőtérképpel; hookok Claude Code-hoz | tervezett |
-| `learn-merge` | P05 | típusos, tömörítés nélküli szabály-változtatás (add, update, deprecate, move), verzió-pillanatkép, napló; független bíra egy másik modellcsaládból | tervezett |
-| `health` | P11 | canary és súlyozott ellenőrzések, riasztás állapotváltáskor | tervezett |
-| `secrets` | P07 | titok-leltár (érték nélkül), gépenkénti jelenlét, egészség-ellenőrzés; titkosított átviteli csomag | tervezett |
-| `backup` | P10 | titkosított pillanatkép-mentés ütemezéssel és próba-visszaállítással | tervezett |
+| `search` | P06 | SQLite FTS5 index of the vault, ranked search on 2 to 4 word stems, a read-only skill | planned |
+| `cognition` | P05 | weighted learned rules, use marks, the cognitive cycle, a report with a heat map; hooks for Claude Code | planned |
+| `learn-merge` | P05 | typed rule changes without compaction (add, update, deprecate, move), version snapshots, a log; an independent judge from another model family | planned |
+| `health` | P11 | canary and weighted checks, alerts on state change | planned |
+| `secrets` | P07 | secrets inventory without values, per-machine presence, a health check; the encrypted transfer bundle | planned |
+| `backup` | P10 | encrypted snapshot backup on a schedule, with test restores | planned |
 
-Platform-jelölés minden kitnél: mi működik Claude Code-ban, mi Codexben, és mi platformfüggetlen (a szkriptek Pythonban, függőség nélkül vagy minimális függőséggel).
+Every kit will say what works in Claude Code, what works in Codex, and what is platform-independent (Python scripts with no or minimal dependencies).
+
+The diagnosis scanner is already here: [`tools/diagnose.py`](../tools/diagnose.py).

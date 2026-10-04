@@ -1,25 +1,25 @@
 ---
-title: <skill neve>
-date: <ÉÉÉÉ-HH-NN>
+title: <skill name>
+date: <YYYY-MM-DD>
 status: active
-description: <mit csinál a skill, egy-két mondatban>
+description: <what the skill does, in one or two sentences>
 version: 0.1.0
 ---
 
-# <skill neve>
+# <skill name>
 
-## Alkotmány (csak a gazda módosíthatja)
+## Constitution (only the owner changes this)
 
-<A skill invariánsai. A tanulási gépezet ehhez nem nyúl.>
+<The skill's invariants. The learning machinery never touches this.>
 
-## Mikor használd
+## When to use
 
-<Kiváltó helyzetek.>
+<Triggers.>
 
-## Lépések
+## Steps
 
 1. …
 
-## Buktatók
+## Pitfalls
 
-<Ide gyűlnek a tanult szabályok, stabil azonosítóval: `<!-- rule:R-001 since:ÉÉÉÉ-HH-NN -->`.>
+<Learned rules collect here, each with a stable ID: `<!-- rule:R-001 since:YYYY-MM-DD -->`.>

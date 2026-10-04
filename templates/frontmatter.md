@@ -1,16 +1,16 @@
-# Frontmatter-séma (P01)
+# Frontmatter schema (P01)
 
 ```yaml
 ---
-title: <a fájl neve>
-date: <ÉÉÉÉ-HH-NN>
-author: <a gazda neve>
+title: <file name>
+date: <YYYY-MM-DD>
+author: <owner>
 status: active | draft | done | archived
-description: <1-2 mondat a TARTALOMRÓL, kötelező>
+description: <one or two sentences about the CONTENT, required>
 id: <uuid4>
-tags: [opcionális]
-version: <semver, csak verziózott fájlokhoz>
+tags: [optional]
+version: <semver, only for versioned files>
 ---
 ```
 
-A `description` a legfontosabb mező: a keresés ezen fut, és az agent ebből dönti el, hogy érdemes-e megnyitni a fájlt. Tartalmi legyen („A 2026-os költségvetés havi bontása és a három eltérés oka"), ne általános („Jegyzet a költségvetésről").
+`description` is the most important field: search runs on it, and an agent decides from it whether a file is worth opening. Make it about the content ("Monthly 2026 budget with the three variances explained"), not generic ("Notes about the budget").
