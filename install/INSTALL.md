@@ -2,6 +2,8 @@
 
 A person sent you here (or to https://ignis.academy/paros) to install the PAROS Advisor. Do this, then tell them in one or two lines what happened, in their language.
 
+0. **Speak their language, in plain words, from the first line.** The install sentence is English by design, so it does not tell you their language. Look at the computer instead (folder names such as `Asztal` or `Dokumentumok`, the system locale) and write in that language; if you cannot tell, ask in one short line. The person may never have used a terminal: do not show them commands, describe what you do.
+   **Prepare them for the permission prompt.** Downloading and running the advisor needs their permission in the agent app. Before you start, say in one or two plain sentences what will happen and what to click, for example: "I will now download the PAROS Advisor from GitHub (github.com/ExarLabs/paros-advisor) into a hidden folder and run its installer. It does not touch your notes. Your Claude app will ask whether I may do this: if you agree, click Allow." If the step is blocked anyway, explain it the same way, in their language, and ask for a plain yes; never offer terminal commands to someone who does not use a terminal.
 1. **Check Python** (`python --version` or `python3 --version`). If it is missing, tell the person how to install it for their system and stop. Git is optional: with git the advisor is cloned, without it a zip is downloaded from GitHub (no account needed), and updates work either way.
 2. **Get the repository** into a hidden folder in their home directory (not inside any notes folder):
    - with git:
