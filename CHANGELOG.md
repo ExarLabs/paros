@@ -2,6 +2,12 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.6.0 (2026-10-05)
+
+- **One-sentence install and the `/paros` command.** Tell your agent "Read https://ignis.academy/paros and install the PAROS Advisor": it clones this repository into `~/.paros-advisor` and installs `/paros` for Claude Code (and Codex if present). `/paros` updates the advisor on every use, tells you what is new, and answers questions about your vault.
+- New `playbooks/`: the catalog of step-by-step guides (connectors, dashboards, organising knowledge, meetings, thinking with several AIs, and more), with what is ready and what is coming.
+- To review: install `/paros` once; after that, updates reach you on their own.
+
 ## 0.5.0 (2026-10-05)
 
 - **Renamed to PAROS Advisor** (`ExarLabs/paros-advisor`; the old address redirects). The repository is an advisor engine for building your own PAROS, not PAROS itself.

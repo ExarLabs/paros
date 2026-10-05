@@ -3,7 +3,7 @@ title: ADOPTION
 date: YYYY-MM-DD
 status: active
 description: The vault's PAROS adoption checklist and log: how each principle was adopted, what is still open, and which reference version it is based on.
-reference_version: 0.5.0
+reference_version: 0.6.0
 reference_path: ~/paros-advisor
 ---
 

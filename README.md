@@ -35,7 +35,15 @@ Why this way:
 - **The principle is the asset, not the code.** Scripts are disposable and can be regenerated. What lasts is the principle, the reason behind it, and the way to check it.
 - **It gets more valuable the more people use it.** These are lessons learned from running a real PAROS daily. Use them, adapt them, and tell us what you learn.
 
-## Quick start
+## Install (the easy way)
+
+Tell your AI agent (Claude Code or Codex), in any language:
+
+> Read https://ignis.academy/paros and install the PAROS Advisor.
+
+It downloads this repository into `~/.paros-advisor` and installs the **`/paros`** command. From then on, in any session in your notes folder, type `/paros` for the menu, or `/paros <your question>`: what is my vault behind on, how do I connect a tool, how do I build a dashboard, how do I organise my knowledge. The advisor updates itself each time you use it and tells you what is new. Details: [`install/INSTALL.md`](install/INSTALL.md).
+
+## Quick start (by hand)
 
 1. Download the repository somewhere **outside** your vault:
    ```bash
@@ -62,6 +70,8 @@ Why this way:
 | [`tools/diagnose.py`](tools/diagnose.py) | A dependency-free scanner that measures a vault against the principles. Read-only. |
 | [`guides/`](guides/) | Practical how-tos: add a connector, add a skill, daily work. |
 | [`templates/`](templates/) | Starting points for your vault: entry file, frontmatter, skill definition, adoption checklist. |
+| [`playbooks/`](playbooks/README.md) | Step-by-step guides for what people do with PAROS: connectors, dashboards, organising knowledge, meetings, thinking with several AIs. |
+| [`install/`](install/INSTALL.md) | The installer and the `/paros` command. |
 | [`starter/`](starter/README.md) | A small demo vault with fictional areas, three agents and a dashboard: open it to **see** PAROS working before you build your own. |
 | [`skills/`](skills/README.md) | Ready skills you can adopt into your vault (recipe in `CURRENT.md`, your settings in `LOCAL.md`). |
 | [`agents/`](agents/README.md) | Six agents (viewpoints) you can adopt: Alfred, Iris, Moneto, Presto, Librarian, Maestro. |
