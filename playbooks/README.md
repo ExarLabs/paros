@@ -16,7 +16,7 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 | `search-your-vault` | Index-first search, ranked, in milliseconds | ready (kit: `kits/search`) |
 | `shared-memory-across-machines` | One agent memory for every machine (symlink or junction into the vault) | planned |
 | [`sync-and-backup`](sync-and-backup.md) | Your vault on every device (Obsidian Sync, iCloud, Google Drive, OneDrive, Dropbox or git, chosen for you) plus a real backup with a test restore | **ready** |
-| `session-naming` | Session titles with machine, area and topic, readable on a phone | planned |
+| [`session-naming`](session-naming.md) | Every session titled MACHINE AREA · topic, readable on a phone; codes from your own areas; the agent renames sessions itself where the app allows | **ready** |
 
 ## Learning and reliability
 | Playbook | What you get | Status |

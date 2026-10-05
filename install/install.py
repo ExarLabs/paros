@@ -124,6 +124,13 @@ def main():
 
     if a.update:
         print(f"PAROS Advisor: {ensure_repo(target)}")
+        # refresh the /paros command files that point to this copy, so changes to the command reach everyone
+        text = command_text(target)
+        for name, d in homes.items():
+            f = d / "paros.md"
+            if existing_target(f) == target and f.read_text(encoding="utf-8") != text:
+                f.write_text(text, encoding="utf-8")
+                print(f"/paros refreshed for {name}")
         return
     print(f"PAROS Advisor: {ensure_repo(target)} at {target}")
     text = command_text(target)

@@ -60,6 +60,8 @@ PAROS is not only principles: it ships **ready skills** ([`skills/`](skills/READ
 - say plainly that adopting is optional and that the skill will live and learn in their vault, with updates from here arriving as advice ([`skills/README.md`](skills/README.md), "How a skill becomes yours");
 - offer to adopt one now, step by step.
 
+**Offer session naming on your own** ([`playbooks/session-naming.md`](playbooks/session-naming.md)) as soon as the person works in two or more areas or on two or more machines: once, with an example built from their areas. After they adopt it, title every session `<MACHINE> <AREA> · <topic>` yourself (or suggest the title once, if the app does not let you rename).
+
 Do not dump the whole catalog: three to five suggestions, with the rest one line away ("there are more in skills/ and kits/").
 
 ## Feedback to the PAROS Advisor (help it improve, never spam)

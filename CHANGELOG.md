@@ -2,6 +2,12 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.11.0 (2026-10-05)
+
+- New playbook **session-naming**: every session titled `<MACHINE> <AREA> · <topic>`, readable on a phone, with codes from your own areas (template `templates/SESSION_NAMING.md`). The advisor offers it by itself as soon as you work in two or more areas or on two or more machines; once adopted, the agent titles sessions itself where the app allows, otherwise suggests the title once. `/paros` applies it at the start of every session.
+- `/paros` updates now also refresh the command itself, so changes to it reach you without reinstalling.
+- To review: if you work in several areas or on several machines, ask `/paros set up session naming`.
+
 ## 0.10.1 (2026-10-05)
 
 - Install: the first line comes in the person's language, in plain words, and prepares them for the permission prompt of their agent app ("click Allow"); the installer's closing message asks whether a notes folder exists and offers start-from-zero.
