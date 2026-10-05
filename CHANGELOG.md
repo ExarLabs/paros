@@ -2,6 +2,13 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.8.0 (2026-10-05)
+
+- **Feedback that improves the advisor, without spam.** When the advisor notices a gap in itself (a missing playbook, a wrong instruction, a failing kit, a better way), it asks you once, in your language: report it to the maintainers? (yes / no / never ask again). With your yes it shows you the exact text, checks it for personal data, and sends it: as a pull request from your own fork if the GitHub CLI is signed in, otherwise as a pre-filled issue you submit yourself. At most one question a day, never twice about the same topic, nothing after "never". `tools/feedback.py`, `proposals/`, `CONTRIBUTING.md`.
+- New playbook **sync-and-backup**: choosing between Obsidian Sync, iCloud, Google Drive, OneDrive, Dropbox and git, setting it up, adding a real backup and testing a restore.
+- README: the three things the advisor does (ask and diagnose, build, advise).
+- To review: nothing to do; if you never want to be asked about reporting, run `python ~/.paros-advisor/tools/feedback.py optout`.
+
 ## 0.7.1 (2026-10-05)
 
 - New playbook **connect-a-web-app-without-api**: how to use any web app without an API from your agent, the way PAROS uses NotebookLM. The connection ladder (API, client, the app's own JSON endpoints, screen automation), your own signed-in browser, a recipe note per app, the measured bridge rules, wrapping it as a skill, and safety for apps that post or send. If your team builds the app, the recipe doubles as the specification for a real API.

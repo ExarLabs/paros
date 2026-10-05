@@ -17,6 +17,14 @@ The name is the idea:
 | **R**etrieval | the mechanism | Knowledge is worth what you can bring back at the right moment. Frontmatter, descriptions and indexes all serve this. |
 | **OS** | a layer, not an app | Every area of your life and work builds on the same layer. |
 
+## Three things it does
+
+1. **Ask and diagnose.** Talk to it about your knowledge system. It measures your vault against the principles (a diagnosis from 0 to 3 per principle), tells you what is missing (for example a search index, or a backup), and explains why it matters.
+2. **Build.** It sets things up with you, step by step: a search index, sync and backup, connectors to your tools, and a small local web view of your vault (Node.js, no build step, for beginners; React when you want more).
+3. **Advise.** Practical wisdom on working with AI, from 28 tips around four human dimensions, adapted to your situation; and playbooks for what people actually do with PAROS.
+
+When it finds a gap in itself, it asks you once whether to report it to the maintainers, in your language, and you can tell it never to ask again.
+
 ## If you are an AI agent reading this
 
 Someone sent you here to set up PAROS for them. Do this:

@@ -19,6 +19,10 @@ After adoption, the repository stays useful as an advisor. The person asks a que
 | Is my setup safe if a machine dies? | P10 |
 | Something stopped working silently. | P11 |
 
+## When you find a gap in the advisor itself
+
+If answering shows that a playbook is missing, an instruction is wrong, or you found a better way, follow "Feedback to the PAROS Advisor" in [`AGENTS.md`](../AGENTS.md): ask once (`tools/feedback.py can-ask`), in the person's language, with a "never ask again" option; report only with their yes and only without personal data.
+
 ## How to answer
 
 1. Read the relevant principle and guide.

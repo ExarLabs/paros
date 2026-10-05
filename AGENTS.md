@@ -56,6 +56,19 @@ PAROS is not only principles: it ships **ready skills** ([`skills/`](skills/READ
 
 Do not dump the whole catalog: three to five suggestions, with the rest one line away ("there are more in skills/ and kits/").
 
+## Feedback to the PAROS Advisor (help it improve, never spam)
+
+While you work with a person you may notice something the advisor itself should learn: a playbook that is missing, an instruction that was wrong or out of date, a kit that failed, or a better way the two of you found. PAROS improves through these reports. The flow:
+
+1. **Is it worth reporting?** Only something general that would help other people too: a gap, an error, a better method. Not a personal preference, not something about this person's own data.
+2. **May you ask?** Run `python <advisor>/tools/feedback.py can-ask --topic <short-slug>`. If it says no, do not ask (the person opted out, was asked in the last 24 hours, or was already asked about this topic).
+3. **Ask once, in the person's language, at a natural pause** (end of a step, not in the middle of work), for example: "We found something the PAROS Advisor does not cover yet: <one sentence>. Would you like me to report it to the PAROS maintainers? (yes / no / never ask me this again)". Record the answer: `feedback.py asked --topic <slug> --answer yes|no|never`. "Never" switches the questions off on this machine until they run `feedback.py optin`.
+4. **If yes, write the report in English,** with the person's own words quoted in their language if that helps: what happened, what was missing or wrong, the suggested change (which file or playbook), and why it would help others. **No personal data:** no names, emails, file paths, company or client details, secrets, vault content. Show the exact text to the person and wait for their yes.
+5. **Send it:** save the text to a temporary file and run `python <advisor>/tools/feedback.py submit --title "<short title>" --body-file <file> --kind improvement|missing|bug`. With the GitHub CLI signed in, this opens a pull request from the person's own fork (a proposal on a new branch; nobody but the maintainers can change `main`). Without it, it opens a pre-filled issue page that the person submits themselves. The script refuses text that looks like personal data.
+6. **Tell the person** in one line what happened and give the link.
+
+Never submit without the person's explicit yes to that exact text, and never ask more than the rules above allow.
+
 ## Where you write in the person's vault
 
 Everything goes under one folder, `PAROS/`, unless the person prefers another place:

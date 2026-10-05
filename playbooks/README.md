@@ -14,7 +14,7 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 | `project-state` | One current-state file per long-running project or area | ready (skill: `skills/project-state`) |
 | `search-your-vault` | Index-first search, ranked, in milliseconds | ready (kit: `kits/search`) |
 | `shared-memory-across-machines` | One agent memory for every machine (symlink or junction into the vault) | planned |
-| `multi-machine-sync` | Two or more machines, sync plus version control, without conflicts | planned |
+| [`sync-and-backup`](sync-and-backup.md) | Your vault on every device (Obsidian Sync, iCloud, Google Drive, OneDrive, Dropbox or git, chosen for you) plus a real backup with a test restore | **ready** |
 | `session-naming` | Session titles with machine, area and topic, readable on a phone | planned |
 
 ## Learning and reliability
@@ -24,7 +24,6 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 | `cognitive-cycle` | Weighted rules, visible use, a cycle report with a heat map | ready (kit: `kits/cognition`) |
 | `health-checks` | End-to-end canary and checks that alert only on state change | ready (kit: `kits/health`) |
 | `secrets-and-new-machines` | Secrets outside the vault, an inventory, encrypted transfer between machines | ready in part (kit: `kits/secrets`) |
-| `backup` | A real backup with test restores (sync is not backup) | planned |
 | `build-your-own-skills` | Thin entries, live definitions, versions, packaging skills as plugins | ready (kit: `kits/thin-entry`) |
 
 ## Connectors
