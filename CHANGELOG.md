@@ -2,6 +2,13 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.10.1 (2026-10-05)
+
+- Install: the first line comes in the person's language, in plain words, and prepares them for the permission prompt of their agent app ("click Allow"); the installer's closing message asks whether a notes folder exists and offers start-from-zero.
+- `install.py` no longer repoints an existing `/paros` command to another copy (for example a test install) unless you pass `--force`.
+- Whenever a session ends, also early, the advisor offers to save where you are.
+- To review: nothing to do.
+
 ## 0.10.0 (2026-10-05)
 
 Lessons from the first live simulation (a complete beginner and a person with a messy existing vault, played by another AI against the real advisor):

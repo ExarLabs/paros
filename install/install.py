@@ -19,6 +19,7 @@ What it does:
 """
 import argparse
 import io
+import re
 import shutil
 import subprocess
 import sys
@@ -86,6 +87,15 @@ def ensure_repo(target: Path):
     return "updated (zip)" if zip_copy else "downloaded (zip, no git needed)"
 
 
+def existing_target(cmd: Path):
+    """The advisor folder an installed /paros command points to, if any."""
+    try:
+        m = re.search(r'--dir "([^"]+)"', cmd.read_text(encoding="utf-8"))
+        return Path(m.group(1)).resolve() if m else None
+    except Exception:
+        return None
+
+
 def command_text(target: Path):
     src = (target / "install" / "paros.command.md")
     if not src.exists():
@@ -98,6 +108,7 @@ def main():
     ap.add_argument("--dir", default=str(Path.home() / ".paros-advisor"))
     ap.add_argument("--uninstall", action="store_true")
     ap.add_argument("--update", action="store_true", help="only refresh the advisor copy")
+    ap.add_argument("--force", action="store_true", help="repoint /paros even if it points to another working copy")
     a = ap.parse_args()
     target = Path(a.dir).expanduser().resolve()
     homes = {"Claude Code": Path.home() / ".claude" / "commands", "OpenAI Codex": Path.home() / ".codex" / "prompts"}
@@ -120,6 +131,12 @@ def main():
     for name, d in homes.items():
         if not d.parent.exists():
             continue  # this platform is not used on this machine
+        other = existing_target(d / "paros.md")
+        if other and other != target and (other / "AGENTS.md").exists() and not a.force:
+            print(f"/paros for {name} already points to another working copy ({other}); left unchanged. "
+                  f"Use --force to point it to {target}.")
+            installed += 1
+            continue
         d.mkdir(parents=True, exist_ok=True)
         (d / "paros.md").write_text(text, encoding="utf-8")
         print(f"/paros installed for {name}: {d / 'paros.md'}")
