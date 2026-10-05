@@ -26,7 +26,8 @@ Goal: an honest picture of where the vault stands, principle by principle, with 
 
    Also mark each principle `now`, `later` or `not needed` for this person (connectors can wait if they use no external tools; backup is never `not needed`).
 4. **Write** `PAROS/DIAGNOSIS.md` (template: `templates/DIAGNOSIS.md`): date, reference version, the table, the three biggest gaps, and the one change that would remove the most friction.
-5. **Present** the result in a few lines in the chat: a small text map (one line per principle, level as blocks, for example `P01 Persistence  ██░  2`), the biggest gaps, and the suggested first step. Then offer the personal guide (flow 3) or going straight to adoption (flow 4).
+5. **Map gaps to ready help:** for each of the three biggest gaps, check whether a skill or a kit closes it, and add it to `DIAGNOSIS.md` ("Ready help": name, what it does here, effort).
+6. **Present** the result in a few lines in the chat: a small text map (one line per principle, level as blocks, for example `P01 Persistence  ██░  2`), the biggest gaps, and the suggested first step. Then offer the personal guide (flow 3) or going straight to adoption (flow 4).
 
 ## Rules
 

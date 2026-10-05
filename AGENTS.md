@@ -33,6 +33,17 @@ Read [`principles/README.md`](principles/README.md) first, then follow the flow 
 
 If the vault already contains `PAROS/ADOPTION.md`, this is not a first visit: read it, say where things stand, and ask what they want to do (continue adoption, advice, or upgrade).
 
+## Always offer what can be adopted
+
+PAROS is not only principles: it ships **ready skills** ([`skills/`](skills/README.md)) and **kits** ([`kits/`](kits/README.md)). Whenever the person asks what they can learn, take or adapt from PAROS, and at the end of the tour, the diagnosis and the personal guide, **present the relevant ones**, matched to what you know about them:
+
+- for each: what it is for, one sentence on how they would use it in *their* vault, and what adopting it takes (minutes, an hour, a few days);
+- start with the ones that remove the friction they named;
+- say plainly that adopting is optional and that the skill will live and learn in their vault, with updates from here arriving as advice ([`skills/README.md`](skills/README.md), "How a skill becomes yours");
+- offer to adopt one now, step by step.
+
+Do not dump the whole catalog: three to five suggestions, with the rest one line away ("there are more in skills/ and kits/").
+
 ## Where you write in the person's vault
 
 Everything goes under one folder, `PAROS/`, unless the person prefers another place:

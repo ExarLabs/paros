@@ -16,8 +16,9 @@ Goal: a short, personal course that explains **this person's own vault** through
    - *What would change*, with a concrete example of the result.
    - *Why it is worth it*: the reason behind the principle, tied to their situation.
    - *Effort*: small, medium or large; and whether it can wait.
-4. **Your first week:** three to five concrete steps, the core first (entry file, frontmatter, task list, search).
-5. **How to keep going:** how to ask the agent for advice later, and how updates of this repository reach them.
+4. **Skills and kits you can adopt:** three to five from [`skills/`](../skills/README.md) and [`kits/`](../kits/README.md), each with what it is for, how you would use it in this vault (a concrete example with their own files), and the effort. Start with the ones that remove the friction they named.
+5. **Your first week:** three to five concrete steps, the core first (entry file, frontmatter, task list, search).
+6. **How to keep going:** how to ask the agent for advice later, and how updates of this repository reach them.
 
 ## Rules
 

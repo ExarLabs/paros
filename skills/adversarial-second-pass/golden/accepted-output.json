@@ -1,0 +1,36 @@
+{
+  "net_new": [
+    {
+      "item": "The venue holds the date only until Friday, and the date is confirmed only after the deposit is paid.",
+      "evidence": "\"the venue holds it for us until Friday\" [00:11:02]",
+      "value": "high",
+      "suggested_home": "task-list"
+    },
+    {
+      "item": "Single point of dependency: only one person has the venue contact, and he is away next week.",
+      "evidence": "\"Only Sam has the venue contact, he's away next week.\" [00:11:20]",
+      "value": "high",
+      "suggested_home": "open-questions"
+    }
+  ],
+  "corrections": [
+    {
+      "result_claim": "Decision: 80 guests.",
+      "corrected": "Guest count is an estimate, 80 to 100, not decided.",
+      "evidence": "\"Probably 80, could be closer to 100, I'm not sure yet.\" [00:02:31]",
+      "severity": "high",
+      "suggested_home": "decisions"
+    },
+    {
+      "result_claim": "Catering: 42 per head, all inclusive.",
+      "corrected": "42 per head, drinks not included.",
+      "evidence": "\"Catering quote is 42 per head, drinks not included.\" [00:05:48]",
+      "severity": "medium",
+      "suggested_home": "result-addendum"
+    }
+  ],
+  "partial_nuances": [
+    "Venue capacity is 120, which covers the upper estimate of 100 guests."
+  ],
+  "summary_one_line": "Two high-value omissions (Friday deadline tied to the deposit, single contact person) and two corrections (a guess recorded as a decision, drinks excluded from catering)."
+}

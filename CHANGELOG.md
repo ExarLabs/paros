@@ -2,6 +2,13 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.3.0 (2026-10-05)
+
+- New kits, working and tested: `view` (no app, a zero-build Node.js view with search, note preview, tasks written back to markdown and live refresh, or step-by-step React instructions on the same API), `learn-merge` (typed rule changes without compaction, plus the independent judge), `cognition` (weighted rules and the cognitive cycle), `secrets` (inventory without values).
+- New: shared skills in `skills/` (`frontmatter-header`, `project-state`, `adversarial-second-pass`), each with a live definition, a thin entry, a changelog and a golden example, and the adoption mechanism: a skill lives in your vault with an `upstream:` block, and updates from here arrive as suggestions judged by your own learning loop.
+- The advisor now always offers matching skills and kits: at the end of the tour, the diagnosis and the personal guide, and whenever you ask what you can adopt.
+- To review: ask your agent "Which PAROS skills and kits would help me most?" and adopt the ones that remove your biggest friction.
+
 ## 0.2.1 (2026-10-04)
 
 - Vision stated: a minimal, cognitive operating system that adapts to you.

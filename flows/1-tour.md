@@ -14,7 +14,8 @@ Goal: the person understands what PAROS is, why it works this way, and what happ
    - SaaS is the backbone, AI is the glue (P08).
 4. **The boundaries** (P00): what an agent never does alone.
 5. **How this repository works:** it is an advisor, not a template; updates are advice.
-6. **What happens next:** offer the diagnosis (flow 2). Explain it is read-only and takes a few minutes.
+6. **What is in the box:** besides the principles there are ready skills and kits. Name two or three that fit what you have seen of their vault, each with one sentence on what it would do for them (see [`skills/README.md`](../skills/README.md) and [`kits/README.md`](../kits/README.md)).
+7. **What happens next:** offer the diagnosis (flow 2). Explain it is read-only and takes a few minutes.
 
 ## Tone
 

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PAROS view</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <strong>PAROS</strong>
+    <input id="q" type="search" placeholder="Search your vault (2-4 words)" autocomplete="off">
+    <span id="fresh" title="When the view last read the vault"></span>
+  </header>
+  <main>
+    <aside>
+      <h2>Tasks</h2>
+      <ul id="tasks"></ul>
+      <h2>Results</h2>
+      <ul id="results"><li class="muted">Type to search. Title counts most, then description, then body.</li></ul>
+    </aside>
+    <article id="note"><p class="muted">Pick a note. This view only reads your markdown; ticking a task writes back into the markdown file.</p></article>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

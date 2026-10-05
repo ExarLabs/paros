@@ -11,6 +11,8 @@ Goal: the vault becomes a PAROS, one checked step at a time, with the person's d
 
 From `PAROS/DIAGNOSIS.md`, write `PAROS/ADOPTION.md` (template: `templates/ADOPTION.md`). For each principle the status is one of: `present`, `to adopt`, `in progress`, `done`, `adapted` (the person's own version, with a reason), `later`, `not needed`. For every `to adopt` item, write the concrete steps **for this vault**, not generic ones.
 
+Add a **Skills and kits** section to the checklist: the ones the person chose from the diagnosis and the guide, each with status and the adoption steps from [`skills/README.md`](../skills/README.md).
+
 Order: the **core** principles first (P00, P01, P03, P04, P06, P09, P11), then the rest. Show the list and ask for approval of the order.
 
 A good first week: the vault entry file with the boundaries, frontmatter for new files, the task list, search. The learning cycle and connectors can wait.
