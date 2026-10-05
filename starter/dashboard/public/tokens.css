@@ -1,0 +1,35 @@
+/* PAROS starter dashboard: design tokens.
+   Change the look here; style.css only uses these variables.
+   Palette: deep navy ground, signal red for action, yellow for labels and paths. Sharp corners everywhere. */
+:root {
+  color-scheme: dark;
+
+  /* ground */
+  --navy: #0f1b2d;
+  --navy-2: #13233a;
+  --panel: #17283f;
+  --line: #27384e;
+
+  /* signal */
+  --red: #d92027;
+  --red-press: #b81a20;
+  --yellow: #f5c518;
+  --orange: #e87a20;
+  --green: #39a85a;
+
+  /* ink */
+  --text: #e8e5da;
+  --muted: #90a0b3;
+  --white: #ffffff;
+
+  /* type */
+  --font-head: 'Space Grotesk', -apple-system, system-ui, sans-serif;
+  --font-body: 'Source Sans 3', -apple-system, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Menlo, monospace;
+
+  /* shape and rhythm */
+  --radius: 0;
+  --gap: 20px;
+  --pad: 24px;
+  --rule: 3px;
+}

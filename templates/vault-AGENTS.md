@@ -38,4 +38,4 @@ Archive instead of delete (`Archive/`, with date and reason).
 
 ## PAROS reference
 
-The reference lives at `<~/paros>`. Adoption log: `PAROS/ADOPTION.md`.
+The reference lives at `<~/paros-advisor>`. Adoption log: `PAROS/ADOPTION.md`.

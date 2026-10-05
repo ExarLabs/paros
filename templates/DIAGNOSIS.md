@@ -3,7 +3,7 @@ title: DIAGNOSIS
 date: YYYY-MM-DD
 status: active
 description: PAROS diagnosis of this vault: maturity per principle with evidence, the biggest gaps, and the first step that removes the most friction.
-reference_version: 0.4.0
+reference_version: 0.5.0
 ---
 
 # PAROS diagnosis

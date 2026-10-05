@@ -2,6 +2,14 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.5.0 (2026-10-05)
+
+- **Renamed to PAROS Advisor** (`ExarLabs/paros-advisor`; the old address redirects). The repository is an advisor engine for building your own PAROS, not PAROS itself.
+- New `agents/`: six viewpoints you can adopt, names kept: Alfred (chief of staff), Iris (people), Moneto (finance), Presto (marketing), Librarian (knowledge caretaker), Maestro (system caretaker, learning review and cognitive cycle). Each with a recipe, a `LOCAL.example.md`, and entries for Claude Code and Codex.
+- New `packs/`: podcast production (12 skills) and meetings (3 skills).
+- New `starter/`: a small demo vault with fictional areas, three agents and a dashboard (navy, red and yellow design tokens, zero dependencies), to see PAROS working before building your own.
+- To review: if you use any of these viewpoints already under other names, compare their rules with yours; adopt Alfred first if you have none.
+
 ## 0.4.0 (2026-10-05)
 
 - New kits, working and tested: `thin-entry` (build thin skill entries with the "vault always wins" version report, promote with snapshots, a learning digest), `search` (a standalone FTS5 index outside the vault and ranked search), `health` (canary, index, secrets, frontmatter, learning cycle and backup checks, alerts only on state change).

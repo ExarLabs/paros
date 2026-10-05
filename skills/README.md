@@ -33,7 +33,7 @@ A skill is **copied into your vault and lives there**; this repository stays rea
 1. **Adopt.** Your agent copies `CURRENT.md` into your vault (default `PAROS/skills/<name>/CURRENT.md`, or wherever your entry file says skills live), creates `LEARNINGS.md` and an `observations/` folder next to it, and fills in the `upstream:` block in the frontmatter:
    ```yaml
    upstream:
-     source: https://github.com/ExarLabs/paros/tree/main/skills/<name>
+     source: https://github.com/ExarLabs/paros-advisor/tree/main/skills/<name>
      version: 1.0.0      # the version you adopted
    ```
 2. **Install the entry.** The agent puts `SKILL.md` where your platform looks for skills (Claude Code: `.claude/skills/<name>/SKILL.md`; Codex and other agents: their skills folder, or a line in your vault's `AGENTS.md` that points to the live definition).

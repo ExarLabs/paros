@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PAROS starter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/tokens.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg class="glyph" viewBox="0 0 48 48" aria-hidden="true">
+      <rect x="0" y="0" width="22" height="22" fill="var(--red)"/>
+      <rect x="26" y="0" width="22" height="22" fill="var(--yellow)"/>
+      <rect x="0" y="26" width="22" height="22" fill="var(--yellow)" opacity=".35"/>
+      <rect x="26" y="26" width="22" height="22" fill="var(--white)"/>
+    </svg>
+    <div class="brand">
+      <h1>PAROS</h1>
+      <div class="sub">Starter vault · demo</div>
+    </div>
+    <div class="stats">
+      <div><div class="num" id="sNotes">·</div><div class="lbl">notes</div></div>
+      <div><div class="num" id="sTasks">·</div><div class="lbl">open tasks</div></div>
+      <div><div class="num" id="sStale">·</div><div class="lbl">stale</div></div>
+    </div>
+  </header>
+
+  <p class="intro">A fictional vault, so you can see PAROS working. Everything here is read from the markdown files; ticking a task writes back into <code>TODO.md</code>.</p>
+
+  <section>
+    <div class="h">Agents</div>
+    <div class="agents" id="agents"></div>
+  </section>
+
+  <div class="cols">
+    <section>
+      <div class="h">Search</div>
+      <div class="searchbox">
+        <span class="ic" aria-hidden="true">/</span>
+        <input id="q" type="search" placeholder="Try: bakery, long run, november book" autocomplete="off" aria-label="Search the vault">
+      </div>
+      <div class="hint">Ranked: title x10, description x5, body x1. Good descriptions make good search.</div>
+      <div class="results" id="results"></div>
+    </section>
+
+    <section>
+      <div class="h">Open tasks <span class="h-meta">TODO.md</span></div>
+      <ul class="tasks" id="tasks"></ul>
+    </section>
+  </div>
+
+  <section>
+    <div class="h">Freshness <span class="h-meta" id="fresh"></span></div>
+    <div class="areas" id="areas"></div>
+    <div class="fresh-cols">
+      <div>
+        <div class="sub-h">Recently changed</div>
+        <ul class="list" id="recent"></ul>
+      </div>
+      <div>
+        <div class="sub-h">Stale (active, older than 90 days)</div>
+        <ul class="list" id="stale"></ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>PAROS starter · dashboard/server.mjs · 127.0.0.1 only</span>
+    <span>Build your own: the advisor in the repository root</span>
+  </footer>
+</div>
+
+<aside id="drawer" class="drawer" hidden>
+  <button class="close" id="close" aria-label="Close">Close</button>
+  <article id="note"></article>
+</aside>
+
+<script src="/app.js"></script>
+</body>
+</html>

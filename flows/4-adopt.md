@@ -5,7 +5,7 @@ Goal: the vault becomes a PAROS, one checked step at a time, with the person's d
 ## 0. Safety
 
 - Is there a way back (git, a copy, sync version history)? If not, that is the first item.
-- Record where this repository lives (for example `~/paros`) in the vault's entry file, so later sessions find it.
+- Record where this repository lives (for example `~/paros-advisor`) in the vault's entry file, so later sessions find it.
 
 ## 1. The checklist
 
