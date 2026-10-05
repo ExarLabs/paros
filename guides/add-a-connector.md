@@ -9,6 +9,9 @@ A connector lets your PAROS read from (and, with your approval, write to) an ext
 
 ## 2. Official or your own
 
+If the tool has **no API at all**, follow [`playbooks/connect-a-web-app-without-api.md`](../playbooks/connect-a-web-app-without-api.md): the same approach PAROS uses for NotebookLM.
+
+
 - **Official first:** Claude and ChatGPT both offer connectors for common tools. Use them if they are enough.
 - **Your own when you hit a limit:** several accounts of the same kind (the official ones often allow one), a missing function, a different permission scope, a tool with no official connector. Building one is cheap: an agent can write a small script against the tool's API, or adapt an existing open-source one.
 

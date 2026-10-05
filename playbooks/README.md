@@ -38,6 +38,7 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 | `connect-project-tools` | Jira, Trello, Redmine, GitHub: read freely, write with approval | planned |
 | `unified-calendar` | Every calendar in one agenda, with meeting prep from the vault | planned |
 | [`notebooklm-experts`](notebooklm-experts.md) | NotebookLM notebooks as consultable experts, with a knowledge map of what each knows | **ready** |
+| [`connect-a-web-app-without-api`](connect-a-web-app-without-api.md) | Use any web app that has no API (a notebook tool, an admin portal, a social media tool your team builds) from your agent: connection ladder, your signed-in browser, a recipe note per app, the bridge rules, a skill around it | **ready** |
 | `youtube-knowledge-base` | Followed channels transcribed into a searchable knowledge base | planned |
 
 ## Thinking with AI

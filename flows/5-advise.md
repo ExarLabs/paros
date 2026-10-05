@@ -7,6 +7,7 @@ After adoption, the repository stays useful as an advisor. The person asks a que
 | Question | Read |
 |---|---|
 | How do I connect a new tool (mail, calendar, CRM, task manager)? | [`guides/add-a-connector.md`](../guides/add-a-connector.md), P07, P08 |
+| A tool we use (or build) has no API: how do we use it from the agent, like NotebookLM? | [`playbooks/connect-a-web-app-without-api.md`](../playbooks/connect-a-web-app-without-api.md), with [`notebooklm-experts.md`](../playbooks/notebooklm-experts.md) as the worked example |
 | How do I turn something I do repeatedly into a skill? | [`guides/add-a-skill.md`](../guides/add-a-skill.md), P04, P05 |
 | How should I work with PAROS day to day? | [`guides/daily-work.md`](../guides/daily-work.md) |
 | Is there a ready skill for this? Can I adopt one? | [`skills/README.md`](../skills/README.md) |

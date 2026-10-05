@@ -84,7 +84,7 @@ Two ways to reach NotebookLM, in this order:
 
    *You decide* which notebooks to actually ask. Synthesising several answers is the main session's job, under the same source-bound rule.
 
-8. **If you drive the browser: follow the bridge rules.** These were measured on a real web chat and hold for most browser-automated chats:
+8. **If you drive the browser: follow the bridge rules** (the general version, for any app without an API, is [`connect-a-web-app-without-api.md`](connect-a-web-app-without-api.md)). These were measured on a real web chat and hold for most browser-automated chats:
    - **Write the question with the native value setter plus an `input` event**, never with simulated typing; simulated typing silently garbles accented characters.
    - **Wait about 800 ms before clicking send,** then check that the input field emptied. A click before the page enables the button is swallowed silently, and the round is lost without any error.
    - **Send, wait and poll as separate calls.** A JavaScript bridge typically cuts a long-running call (around 45 seconds); a half-run async function loses its state. Send in one call, wait in 10-second steps with the automation's own wait, then run a short readiness query.

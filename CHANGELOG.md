@@ -2,6 +2,11 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.7.1 (2026-10-05)
+
+- New playbook **connect-a-web-app-without-api**: how to use any web app without an API from your agent, the way PAROS uses NotebookLM. The connection ladder (API, client, the app's own JSON endpoints, screen automation), your own signed-in browser, a recipe note per app, the measured bridge rules, wrapping it as a skill, and safety for apps that post or send. If your team builds the app, the recipe doubles as the specification for a real API.
+- To review: ask `/paros we have a tool without an API, how do we use it like NotebookLM?`
+
 ## 0.7.0 (2026-10-05)
 
 - New `wisdom/`: 28 practical tips on working with AI, around four human dimensions (Ethos, Logos, Pathos, Thelos), with a question map; the advisor uses them for "how do I work better with AI" questions (creativity, focus, prompting, your own voice).
