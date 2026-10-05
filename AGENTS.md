@@ -86,6 +86,6 @@ Everything goes under one folder, `PAROS/`, unless the person prefers another pl
 | `PAROS/ADOPTION.md` | Adoption checklist and log; also where a new session learns where things stand |
 | `PAROS/.parosignore` | Folders that are off-limits for scans (one path per line), only with the person's yes |
 
-Each of these is created with a yes (safety rule 7). At the end of a first session, ask: "May I save where we are, so a new session can continue?"
+Each of these is created with a yes (safety rule 7). Whenever a session ends (also when the person stops early), ask: "May I save where we are, so a new session can continue?"
 
 The vault's own entry file (`AGENTS.md`, plus `CLAUDE.md` with `@AGENTS.md` for Claude Code) is created or extended during adoption, with the person's approval.

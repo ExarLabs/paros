@@ -107,6 +107,8 @@ Explain the header once, when they first see it: the few lines between `---` mar
 
 ### 10. Save the session, with a yes
 
+**Do this whenever the person stops, even after the first step.** If they end early ("that is enough for today"), this offer still comes before you say goodbye; without it, the next session starts blind.
+
 Ask: "May I save where we are, so that next time a new session can continue from here?" Only with a yes, create `PAROS/ADOPTION.md`: a short profile in their words (what they use the notes for, devices), decisions made, the form of address, next steps. Then tell them how to come back: open the agent in the vault and type `/paros`.
 
 ## Privacy, said accurately
