@@ -130,7 +130,12 @@ def main():
         (d / "paros.md").write_text(text, encoding="utf-8")
         print(f"/paros installed for Claude Code: {d / 'paros.md'}")
     version = (target / "VERSION").read_text(encoding="utf-8").strip() if (target / "VERSION").exists() else "?"
-    print(f"\nDone (advisor v{version}). Start a NEW session in your notes folder and type: /paros")
+    print(f"\nDone (advisor v{version}).")
+    print("Agent, next: tell the person in THEIR language that it is installed, then ask one question:")
+    print("do they already have a notes folder (for example an Obsidian vault)?")
+    print("  - yes, and this session is in it: offer to start here (read AGENTS.md);")
+    print("  - yes, elsewhere: they open a new session in that folder and type /paros;")
+    print(f"  - no or unsure: offer to start from zero right now, in this session: {target.as_posix()}/playbooks/start-from-zero.md")
 
 
 if __name__ == "__main__":
