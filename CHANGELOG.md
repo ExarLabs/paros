@@ -2,6 +2,13 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.7.0 (2026-10-05)
+
+- New `wisdom/`: 28 practical tips on working with AI, around four human dimensions (Ethos, Logos, Pathos, Thelos), with a question map; the advisor uses them for "how do I work better with AI" questions (creativity, focus, prompting, your own voice).
+- Nine playbooks are now **ready**, step by step: organise your knowledge, the task inbox, several Gmail accounts, Google Workspace, the daily briefing, capture, meetings, building a dashboard, NotebookLM notebooks as experts.
+- New kits: `google-workspace`, `activity-ledger`, `reels`; new skill: `portfolio`.
+- To review: ask `/paros how do I organise my knowledge?` or `/paros how do I stay creative with AI?`.
+
 ## 0.6.0 (2026-10-05)
 
 - **One-sentence install and the `/paros` command.** Tell your agent "Read https://ignis.academy/paros and install the PAROS Advisor": it clones this repository into `~/.paros-advisor` and installs `/paros` for Claude Code (and Codex if present). `/paros` updates the advisor on every use, tells you what is new, and answers questions about your vault.

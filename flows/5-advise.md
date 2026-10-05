@@ -11,6 +11,7 @@ After adoption, the repository stays useful as an advisor. The person asks a que
 | How should I work with PAROS day to day? | [`guides/daily-work.md`](../guides/daily-work.md) |
 | Is there a ready skill for this? Can I adopt one? | [`skills/README.md`](../skills/README.md) |
 | I want a dashboard or an app on my vault. | [`kits/view/README.md`](../kits/view/README.md): no app, a zero-build view, or React |
+| How do I work better with AI (creativity, focus, prompting, my own voice)? | [`wisdom/`](../wisdom/README.md): one to three tips, adapted to the person |
 | Do I need a new agent for this? | P03: usually not; check the six reasons for a separate run |
 | Where should this piece of information live? | P01, P12, and the vault's own source map |
 | Can I delete this? | P09 |

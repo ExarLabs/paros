@@ -9,8 +9,8 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 ## Foundations
 | Playbook | What you get | Status |
 |---|---|---|
-| `organise-your-knowledge` | Areas instead of projects, frontmatter with content descriptions, an entry file your agents read | planned |
-| `task-inbox` | One task list with an inbox you drop things into unformatted; the agent sorts them | planned |
+| [`organise-your-knowledge`](organise-your-knowledge.md) | Areas instead of projects, frontmatter with content descriptions, an entry file your agents read | **ready** |
+| [`task-inbox`](task-inbox.md) | One task list with an inbox you drop things into unformatted; the agent sorts them | **ready** |
 | `project-state` | One current-state file per long-running project or area | ready (skill: `skills/project-state`) |
 | `search-your-vault` | Index-first search, ranked, in milliseconds | ready (kit: `kits/search`) |
 | `shared-memory-across-machines` | One agent memory for every machine (symlink or junction into the vault) | planned |
@@ -30,14 +30,14 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 ## Connectors
 | Playbook | What you get | Status |
 |---|---|---|
-| `connect-gmail-multiple` | Several Gmail accounts in parallel, each with its own token | planned |
+| [`connect-gmail-multiple`](connect-gmail-multiple.md) | Several Gmail accounts in parallel, each with its own token | **ready** |
 | `connect-microsoft-365` | Outlook, Teams and SharePoint, including an extra tenant through a script | planned |
 | `connect-any-mailbox` | Any IMAP and SMTP mailbox, sending only with approval | planned |
-| `connect-google-workspace` | Sheets, Forms, Drive and Calendar from scripts, several accounts | planned |
+| [`connect-google-workspace`](connect-google-workspace.md) | Sheets, Forms, Drive and Calendar from scripts, several accounts | **ready** |
 | `connect-a-crm` | A CRM as the shared truth: contacts, deals, events, sign-ups synced from forms | planned |
 | `connect-project-tools` | Jira, Trello, Redmine, GitHub: read freely, write with approval | planned |
 | `unified-calendar` | Every calendar in one agenda, with meeting prep from the vault | planned |
-| `notebooklm-experts` | NotebookLM notebooks as consultable experts, with a knowledge map of what each knows | planned |
+| [`notebooklm-experts`](notebooklm-experts.md) | NotebookLM notebooks as consultable experts, with a knowledge map of what each knows | **ready** |
 | `youtube-knowledge-base` | Followed channels transcribed into a searchable knowledge base | planned |
 
 ## Thinking with AI
@@ -49,9 +49,9 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 ## Personal operations
 | Playbook | What you get | Status |
 |---|---|---|
-| `daily-briefing` | Today's plan from tasks, calendar and mail | ready in part (agent: `alfred`) |
+| [`daily-briefing`](daily-briefing.md) | Today's plan from tasks, calendar and mail | **ready** |
 | `email-triage` | Mail sorted into prepared dossiers, nothing sent without you | ready in part (agent: `alfred`) |
-| `capture` | Raw thoughts dropped in, sorted later | ready in part (agent: `alfred`) |
+| [`capture`](capture.md) | Raw thoughts dropped in, sorted later | **ready** |
 | `recap-and-journal` | What you did, from an activity log, weekly | planned |
 | `planner-and-timeline` | A priority board and a life timeline generated from your notes | planned |
 
@@ -65,7 +65,7 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 ## Content and media
 | Playbook | What you get | Status |
 |---|---|---|
-| `meetings` | Prep, recording, transcript, intake, second pass, archive | ready (pack: `packs/meetings`) |
+| [`meetings`](meetings.md) | Prep, recording, transcript, intake, second pass, archive | **ready** |
 | `transcribe` | Audio, video or YouTube to text, with a completeness check | ready (skill: `skills/transcribe`) |
 | `podcast` | From episode prep to publishing | ready (pack: `packs/podcast`) |
 | `reels-from-video` | Short clips from long video with captions | planned |
@@ -76,7 +76,7 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 ## Views, web and presentations
 | Playbook | What you get | Status |
 |---|---|---|
-| `build-a-dashboard` | No app, a zero-build view, or a React app on the same API | ready (kit: `kits/view`) |
+| [`build-a-dashboard`](build-a-dashboard.md) | No app, a zero-build view, or a React app on the same API | **ready** |
 | `publish-a-microsite` | A small website from your notes, deployed in minutes | planned |
 | `presentations` | Slide decks as code, one design system, presented from a link | planned |
 | `print-design` | Roll-ups and posters measured in real centimetres, contrast checked | planned |
