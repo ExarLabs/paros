@@ -2,6 +2,18 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.12.0 (2026-10-05)
+
+A full pass over the maintainers' own PAROS (every slash command, skill, capability, principle note and memory rule), publishing what is general and not personal.
+
+- **15 playbooks are now ready:** email-triage, connect-any-mailbox (with safe inbox clean-up), connect-microsoft-365, unified-calendar, youtube-knowledge-base, recap-and-journal, share-with-your-team, shared-memory-across-machines, publish-a-microsite, presentations, print-design, publish-from-your-vault, measure-your-ai-usage, and two new ones: measure-your-skills (a harness bench) and report-as-code.
+- **`wisdom/field-lessons.md`:** 51 measured lessons from daily use, by theme (agents, browsers, publishing, media, data and reports, files and scripts, learning, design and print).
+- **New guides:** `guides/architecture.md` (the layers of a PAROS), `guides/glossary.md` (about 60 terms), `guides/website-strategy.md` (seven layers from identity to site, three tiers).
+- **New skill `cv-tailoring`** (evidence-only framing, source untouched, a coverage table) and **new kit `share-gate`** (blocks publishing on your personal deny list, secrets or private emails; pre-commit hook).
+- **Updated:** `skills/think` 1.1.0 (an exhausted API credit switches the member to the browser; long prompts through a file input; patient waits for deep reasoning modes), and the recipes of Alfred (chat mode; "what drops out?"), Librarian (integrate deny list; never merge near-duplicates), Moneto (cash tracked itemised is not an expense; differences on their own line) and Presto (template life cycle; when not to exhaust).
+- **Principle candidates as open proposals:** `proposals/2026-10-05-principle-candidates.md` (freshness and write-back; the harness matters more than the model; a wall between thinking and distribution; silence is the default; verb classes for permissions). The principles themselves are unchanged.
+- To review: ask `/paros what is new for me in 0.12.0?`; the advisor matches the new playbooks to what your vault already does.
+
 ## 0.11.0 (2026-10-05)
 
 - New playbook **session-naming**: every session titled `<MACHINE> <AREA> · <topic>`, readable on a phone, with codes from your own areas (template `templates/SESSION_NAMING.md`). The advisor offers it by itself as soon as you work in two or more areas or on two or more machines; once adopted, the agent titles sessions itself where the app allows, otherwise suggests the title once. `/paros` applies it at the start of every session.

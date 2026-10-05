@@ -2,6 +2,12 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted this viewpoint.**
 
+## 1.1.0 (2026-10-05)
+
+- New `chat` mode: a free conversation with the knowledge base and the owner's notes, index-first, with the Librarian as a worker for wide reads; any edit is shown first and written only after a yes.
+- `focus`: when the owner names a new direction, Alfred asks what drops out in exchange, because attention is finite.
+- To review: if you already talk to your notes through another agent, decide whether `chat` belongs to Alfred in your vault; nothing in `LOCAL.md` needs to change.
+
 ## 1.0.0 (2026-10-05)
 
 - First public version. The chief-of-staff viewpoint from a PAROS in daily use since mid 2026: markdown task store by scope, cognitive inbox with a sync ritual, a multi-source daily briefing that discovers its sources and learns from the owner's reactions, a priority conversation, email triage into prepared dossiers with a contribution trail, a "next" report, and recap.

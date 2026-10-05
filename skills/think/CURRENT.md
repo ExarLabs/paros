@@ -3,7 +3,7 @@ title: think
 date: 2026-10-05
 status: active
 description: Multi-AI thinking with one orchestrator agent: assembles a team of external AIs with roles (researcher, strategist, validator), sends each one fat prompt with a strict findings contract, runs them in parallel over API or browser, merges the answers at field level, and keeps everything in one brainstorm state file that is the canonical memory.
-version: 1.0.0
+version: 1.1.0
 upstream:
   # filled in when adopted into a vault
 ---
@@ -89,6 +89,8 @@ Change anyone? Swap a model or transport, add or remove a member, or pick a pres
 Presets are defined in `LOCAL.md`. Useful shapes: **Premium** (strongest model per role), **Fast** (cheaper models), **Solo** (one provider, the validator played by a second call with a devil's advocate prompt), **Browser only** (no API keys at all).
 
 Lock the confirmed team into the state file's Team table. Then check that every API member's key is present in the environment variable named in `LOCAL.md`. If one is missing, offer a short guided setup (the person creates the key in the provider's console and sets it in **their own** terminal or secret store; it is never pasted into the chat). If declined, move that member to the browser and note it in the state file.
+
+A present key does not prove a usable key: the account behind it can be out of credit. If a round is expensive, you may send each API member a tiny ping first (a few output tokens, "Say PONG") before the fat prompt goes out; a member that fails the ping is moved to the browser right away, as in "Failure modes".
 
 ### 2. Decide the transport
 
@@ -225,19 +227,26 @@ When the thread has **strategic value**, also archive the **full verbatim transc
 - **Never read a reply that is still streaming.** A mid-stream read ends mid-sentence and looks like a complete answer. Read only after a done signal (the `END_OF_RESPONSE` token, or the page's own completion signal).
 - **Insert long or multi-line text in one operation** (an insert-text call, or for a framework-controlled text area the native value setter followed by an `input` event). Simulated typing is slow, can send the message at the first newline, and can mangle accented characters.
 - **If a round times out but the answer is on the page, read it before resending.** Never re-submit blindly.
+- **Bring a long prompt in through a file, not through the tool call.** Typing or pasting 10 KB or more through a browser tool is slow and fragile, and fetching it from a local server usually fails because the AI site's content security policy blocks requests to other origins, inward as well as outward. A path that works: add a temporary file input element to the page, upload the prompt file (which is saved next to the state file anyway) into it with the browser tool's file upload, read it with `file.text()` into a page variable, insert it into the composer in one operation, then remove the input. Check the character count in the composer against the file.
+- **Confirm the send by the page, not by the button.** When the send button cannot be found reliably, the proof that the message went out is that the composer is empty and the page address now carries a conversation identifier.
+- **Deep reasoning modes take long.** Some providers' deepest modes can think for more than ten minutes; a fixed timeout of a few minutes cuts them off. Give such a member a long wait budget, keep waiting in short slices, and do not mark it failed while it is still working.
+- **A bridge filter can swallow a return value.** Some browser bridges block a script's return value when it looks like cookie or query-string data (many `key="value"` pairs, for example). If a read comes back blocked, use another read path (the provider's own conversation data rendered into the page, then a page-text read) instead of retrying the same script.
 
 ## Failure modes
 
 | Failure | Detection | Recovery |
 |---|---|---|
 | API key missing | check at team assembly | guided setup by the person; else move the member to the browser |
-| Rate limit (HTTP 429) | status code | back off 2, 4, 8 seconds, at most three times, then escalate |
+| API credit exhausted | the provider says there is no credit, insufficient quota or a billing problem, sometimes under HTTP 429 | not transient: no backoff and no retry; move the member to the browser for the rest of the session, note it in the state file, tell the person in one line that the API credit needs topping up |
+| Rate limit (HTTP 429) | status code, with no credit or quota message | back off 2, 4, 8 seconds, at most three times, then escalate |
 | API timeout | no answer in about 60 seconds | retry once, then use the browser for this round |
 | Empty answer from a reasoning model | reasoning tokens equal completion tokens | raise the output budget and retry |
 | Empty request body | provider says a field is required or the body cannot be parsed | rebuild the payload with `jq --rawfile` from a file |
 | Contract violation | all three parser branches fail | re-prompt once for the format; low confidence |
 | Browser not signed in | lands on a login page | the person signs in, in that browser; never enter credentials for them |
 | Browser select fails | error on select | rediscover per "Browser choice" |
+| Deep reasoning mode silent for minutes | no done signal yet, but the page shows it is still thinking | keep waiting in short slices within a long budget; do not resend |
+| Return value blocked by the bridge | the read returns a blocked or filtered marker | switch to another read path; do not repeat the same script |
 
 ## Output
 
@@ -257,3 +266,7 @@ When the thread has **strategic value**, also archive the **full verbatim transc
 - Never record a browser identifier you have not just selected successfully. <!-- rule:R-008 since:2026-08-03 -->
 - When a transfer goes through a size-limited channel, verify by parse and character count. <!-- rule:R-009 since:2026-08-03 -->
 - When the person corrects the team, the synthesis or a transport choice, record it as a learning packet in this skill's `observations/` folder (P05). <!-- rule:R-010 since:2026-08-07 -->
+- An exhausted API credit is not a transient error: do not back off and retry; switch that member to the browser for the session, record it in the state file, and tell the person in one line. A key that is present is not proof that it works. <!-- rule:R-011 since:2026-10-05 -->
+- Bring long prompts into a browser composer from a file (a temporary file input, then one insert), not by typing or by fetching from a local server, and check the character count afterwards. <!-- rule:R-012 since:2026-10-05 -->
+- Do not apply a short fixed timeout to deep reasoning modes; they can run for more than ten minutes. <!-- rule:R-013 since:2026-08-24 -->
+- When a browser bridge blocks a return value as cookie or query-string data, change the read path instead of retrying. <!-- rule:R-014 since:2026-09-23 -->

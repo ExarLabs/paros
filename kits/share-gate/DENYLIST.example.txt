@@ -1,0 +1,46 @@
+# share-gate deny list: EXAMPLE with invented entries.
+#
+# Copy this file OUTSIDE the repository you publish, for example to
+#   ~/.config/share-gate/DENYLIST.txt
+# (or point $SHARE_GATE_DENYLIST or --deny at it), then replace every entry
+# with your own. Never commit your real list: it is a list of exactly what
+# must not be public. share-gate refuses to run if the list sits inside the
+# folder it checks.
+#
+# Format, one entry per line:
+#   literal text        matched anywhere, case-insensitive
+#   re:<regex>          a regular expression, case-insensitive
+#   allow:<text>        always allowed (removed from the line before checking)
+#   allow-re:<regex>    always allowed, as a regular expression
+# A line in a checked file that contains "share-gate: ignore" is skipped.
+
+# People: your name and the names of family, colleagues and clients.
+# Use a regex to catch spellings with a hyphen, an underscore or no space.
+Rowan Ashdown
+re:\browan[- _.]?ashdown\b
+Ilse Marten
+
+# Companies, clients and projects.
+re:\bFernvale\s*(?:Consulting|Ltd)?\b
+Project Bluefinch
+
+# Machines and user names that appear in paths.
+re:\bDESKTOP-[A-Z0-9]{7}\b
+re:\bLAPTOP-ROWAN\b
+
+# Private paths and folders.
+re:[A-Za-z]:\\Users\\rowan\b
+re:/home/rowan\b
+# On macOS the home folder starts with /Users instead of /home; add that variant too.
+~/.private-runtime/
+
+# Private domains and email addresses.
+fernvale-consulting.example
+re:@ashdown-family\.
+
+# Identifiers that must never leave: internal ids, account numbers.
+re:\bACC-\d{6}\b
+
+# Allowed exceptions: the public name of the repository and its organisation.
+allow-re:github\.com/your-org/your-repo
+allow:Your Public Project Name

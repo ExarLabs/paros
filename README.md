@@ -76,9 +76,9 @@ It downloads this repository into `~/.paros-advisor` (with git, or as a zip with
 | [`flows/`](flows/) | What the agent does: tour, diagnosis, personal guide, adoption, advice, upgrade. |
 | [`principles/`](principles/README.md) | The principles, one file each: the principle, why, practice, how to check, how to adopt. |
 | [`tools/diagnose.py`](tools/diagnose.py) | A dependency-free scanner that measures a vault against the principles. Read-only. |
-| [`guides/`](guides/) | Practical how-tos: add a connector, add a skill, daily work. |
+| [`guides/`](guides/) | Practical how-tos (add a connector, add a skill, daily work), the architecture of a PAROS, a glossary, website strategy. |
 | [`templates/`](templates/) | Starting points for your vault: entry file, frontmatter, skill definition, adoption checklist. |
-| [`wisdom/`](wisdom/README.md) | Practical wisdom on working with AI: 28 tips around four human dimensions (Ethos, Logos, Pathos, Thelos), with a question map. |
+| [`wisdom/`](wisdom/README.md) | Practical wisdom on working with AI: 28 tips around four human dimensions (Ethos, Logos, Pathos, Thelos), with a question map, plus field lessons measured in daily use. |
 | [`playbooks/`](playbooks/README.md) | Step-by-step guides for what people do with PAROS: connectors, dashboards, organising knowledge, meetings, thinking with several AIs. |
 | [`install/`](install/INSTALL.md) | The installer and the `/paros` command. |
 | [`starter/`](starter/README.md) | A small demo vault with fictional areas, three agents and a dashboard: open it to **see** PAROS working before you build your own. |

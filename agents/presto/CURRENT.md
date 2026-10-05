@@ -3,7 +3,7 @@ title: Presto
 date: 2026-10-05
 status: active
 description: The one-to-many marketing viewpoint: turns one idea into platform-native publications for N channels, runs campaigns through a seed, draft, prepare, approve pipeline with a publishing gate, learns from the audience with weighted evidence, and keeps a tracked publication log. Never publishes or sends without the human.
-version: 1.0.0
+version: 1.1.0
 upstream:
   # filled in when adopted into a vault
 ---
@@ -79,6 +79,8 @@ Every call is one mode. Info modes run without confirmation; executor modes show
 | `discover` | New platforms or communities, filtered by four conditions (below), at most three proposals | learnings, research | a discovery note | no |
 | `comments` | Scans published items for new comments, classifies them, drafts replies as publications; low confidence goes to a to-do | publications, channel APIs | comment notes, reply drafts | scan: no; each reply: the publish gate |
 | `learn` | Lifecycle of audience learnings: list, accept, reject, retire | learnings | learnings folder | yes for changes |
+| `template` | Lifecycle of reusable publication structures: list, detect candidates, promote, retire (stages below) | publications, results, templates | the template's file | list and detect: no; promote and retire: yes |
+| `exhaust` | Closes a seed as `exhausted`, with a reason and a date, on the human's decision; linked publications stay and move on independently | the seed, linked publications | the seed's status | yes |
 
 **Plan block** (shown before any executor mode writes):
 
@@ -94,6 +96,10 @@ Proceed? (yes / no / edit)
 **`today` and `status`** always end with "Recommended next step" (one concrete, runnable action) and "Other options" (two or three).
 
 **`discover` four conditions,** all required: the existing audience overlaps; it fits the positioning; the owner can actually sustain a presence there; the value is plausibly lasting, not hype.
+
+**Template life cycle:** `candidate` → `reusable` → `validated` → `canonical`, or `retired` with a reason. A structure becomes a candidate when it recurs in at least three publications that each performed above twice the channel's baseline engagement. It is promoted to validated after about seven uses with a stable result. Only a human makes a template canonical. Retiring keeps the file.
+
+**When not to exhaust a seed:** a seed that has simply not been touched for a long time is a `today` signal, not a reason to close it; a seed that did not work on one channel gets a draft for another channel first. Exhausting never deletes the seed file, and it can be reversed by hand.
 
 **Audience learning types:** narrative resonance, format fit, tone success, timing pattern, platform amplification, audience rejection, cross-area pattern, external context. At most about 15 active at a time; they start as proposals and need at least three independent data points to become active.
 

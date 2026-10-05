@@ -2,6 +2,8 @@
 
 Find the person's question (or the nearest one), then read the listed tips in [`28-ai-tips.md`](28-ai-tips.md). The first ID is usually the best fit. Pick one to three, quote the principle, adapt the example to their vault (see [`README.md`](README.md)).
 
+For practical questions about a task at hand (a deploy, a report, a script, a recording), look in [`field-lessons.md`](field-lessons.md) instead: it is grouped by theme.
+
 ## Prompting and asking
 
 | Question | Tips |

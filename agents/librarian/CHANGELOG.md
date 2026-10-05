@@ -2,6 +2,13 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted this agent.**
 
+## 1.1.0 (2026-10-05)
+
+- `integrate` checks a fixed deny list before any outside scan (system, application and media folders, key and credential stores, configuration and dot folders, `.git`, dependency folders) and stops to ask when a requested folder falls inside it (R-005).
+- Never merges files that are similar but not byte-identical; an apply that touches an area with active work gets one more question (R-006, and a line in the safety boundaries).
+- Search hits are handed on as a list, never retold in prose, by the Librarian and by the caller (R-007).
+- To review: if your `LOCAL.md` lists outside folders to scan, check none of them falls inside the deny list; your own exclusions can extend it, not shorten it.
+
 ## 1.0.0 (2026-10-05)
 
 - First public version, generalised from a knowledge caretaker in daily use since mid 2026.

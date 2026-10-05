@@ -2,6 +2,13 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted this skill.**
 
+## 1.1.0 (2026-10-05)
+
+- An exhausted API credit is now its own failure mode, separate from a rate limit: no backoff, no retry; the member switches to the browser for the rest of the session, the state file records it, and the person gets one line saying the credit needs topping up (R-011). Team assembly notes that a present key is not proof of a usable key, with an optional cheap ping before an expensive round.
+- Browser rounds: long prompts come in through a file (a temporary file input, one insert, a character count check) instead of typing or a local server fetch that the site's content security policy blocks (R-012); a send is confirmed by an empty composer and a conversation identifier in the page address.
+- Deep reasoning modes get a long wait budget instead of a short fixed timeout (R-013); a return value blocked by the browser bridge as cookie or query-string data means a different read path, not a retry (R-014). Two new rows in the failure mode table.
+- To review: if your setup has a fixed browser timeout, raise it for deep reasoning members; if you keep a provider list in `LOCAL.md`, note which accounts are prepaid, so a credit error is recognised at once; nothing in your `LOCAL.md` needs to change.
+
 ## 1.0.0 (2026-10-05)
 
 - First public version. An orchestrator agent assembles a team of external AIs with roles (researcher, strategist, validator, optional domain expert and creative), sends one fat prompt per member with a fenced findings JSON contract and an end token, runs all members in parallel, parses leniently (fenced block, raw JSON decode, flat shape), merges at field level by the source trust order, and persists everything in one brainstorm state file per topic.

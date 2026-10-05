@@ -38,6 +38,8 @@ Known distortions to carry forward (examples):
 | Undo journal | `Areas/Personal/Finance/undo/` |
 | Earmarked amounts | 10% of income routed to the "Giving" category |
 | Reconciliation target | difference between ledger balance and statement balance = 0.00 |
+| Cash tracked itemised | yes: cash spending is recorded item by item, so cash machine withdrawals are transfers, not expenses |
+| Remaining difference line | a row named "Difference" in the summary tab |
 | Cadence | every 3 days (Alfred reminds) |
 
 Categories live in the playbook, not here.

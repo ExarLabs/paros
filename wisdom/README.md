@@ -35,6 +35,7 @@ Tool names in the tips (Obsidian, NotebookLM, Claude Cowork and others) are exam
 |---|---|
 | [`28-ai-tips.md`](28-ai-tips.md) | The full collection: an intro on the four human dimensions, then 28 tips (W-01 to W-28) and one bonus (W-B1), each with principle, description and example. |
 | [`index.md`](index.md) | Question-to-tip map: typical questions, each routed to one to three tip IDs. |
+| [`field-lessons.md`](field-lessons.md) | Practical lessons from running a PAROS daily (F-01 onwards), grouped by theme: agents, browsers, publishing, media, data, files and scripts, learning, design. |
 
 ### The tips at a glance
 

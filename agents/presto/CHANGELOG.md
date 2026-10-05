@@ -2,6 +2,12 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted this agent.**
 
+## 1.1.0 (2026-10-05)
+
+- New `template` mode with a life cycle (candidate, reusable, validated, canonical, retired) and thresholds: at least three publications above twice the baseline to become a candidate, about seven stable uses to be validated, canonical only by a human.
+- `exhaust` is now its own mode, with the rules for when not to use it: an untouched seed is a `today` signal, and a seed that failed on one channel is drafted for another channel first.
+- To review: if you keep reusable post structures, mark their stage; check whether any seed you closed only because it was old deserves another channel.
+
 ## 1.0.0 (2026-10-05)
 
 - First public version, generalised from a marketing viewpoint in daily use since mid 2026.

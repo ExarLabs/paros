@@ -2,6 +2,12 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted this viewpoint.**
 
+## 1.1.0 (2026-10-05)
+
+- Bookkeeping: when cash is tracked item by item, a cash machine withdrawal is a transfer, not an expense (rule 7); a remaining reconciliation difference goes on its own named line, never folded into a category (rule 5).
+- `LOCAL.example.md` gains two settings: whether cash is tracked itemised, and the name of the difference line.
+- To review: set both in your `LOCAL.md`; if your ledger already books withdrawals as expenses while you also record cash spending, look for double counting in past months.
+
 ## 1.0.0 (2026-10-05)
 
 - First public version. The finance-steward viewpoint from a PAROS in daily use since mid 2026: one methodology note per organisation, kept in that organisation's own area; analysis that starts from the existing note and updates it; an index of financial notes; household bookkeeping as a confirmed, reconciled pipeline with an undo journal.

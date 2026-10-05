@@ -15,6 +15,7 @@ A kit is a working example of a principle. **Optional,** and never copied blindl
 | [`activity-ledger`](activity-ledger/README.md) | P01, P11 | a passive "what did I do" log per machine, written by a session-end hook, with a daily journal and a recap | **available** |
 | [`reels`](reels/README.md) | P08 | long video to short captioned clips, step by step, with the measured lessons as pitfalls; your brand in `LOCAL.md` | **available** |
 | [`view`](view/README.md) | P02 | three levels: no app, a zero-build Node.js view (search, note preview, tasks written back to markdown, live refresh), or a React app on the same API | **available** |
+| [`share-gate`](share-gate/README.md) | P00, P07 | blocks publishing when a repository holds entries of your personal deny list (kept outside it), secret-like patterns or private emails; allow list, file names checked, a pre-commit hook | **available** |
 
 Every kit will say what works in Claude Code, what works in Codex, and what is platform-independent (Python scripts with no or minimal dependencies).
 

@@ -14,6 +14,7 @@ These are skills from a PAROS in daily use, cleaned of personal data and written
 | [`transcribe`](transcribe/) | Audio, video or YouTube to text (Groq Whisper), with a completeness check; the raw transcript is kept as evidence | Meetings, voice memos, interviews, podcasts | P01, P11 |
 | [`speed-reader`](speed-reader/) | Reads a book, article or episode into a structured note: thesis, chapters, quotes with sources, questions | You want the substance of something long, in your vault, searchable | P01, P06 |
 | [`language-editor`](language-editor/) | A native-quality editor for any language; your own language rules live in `LOCAL.md` | Texts that go out to people: posts, letters, course material | P04 |
+| [`cv-tailoring`](cv-tailoring/) | Tailors an existing CV to one bid or job description: evidence-only framing, the source untouched, a requirement coverage table and an internal covering note that names the gaps | A partner, tender or job ad needs a CV fast, and it must hold up in the interview | P00, P12 |
 
 Ask your agent, in any language:
 
