@@ -4,6 +4,7 @@ Goal: the person understands what PAROS is, why it works this way, and what happ
 
 ## Steps
 
+0. **Is there a vault at all?** If the person has no notes folder yet, or has never used Obsidian, switch to [`playbooks/start-from-zero.md`](../playbooks/start-from-zero.md); the tour comes later, in small pieces, along the way.
 1. **One sentence.** PAROS is a person's knowledge in plain markdown, which AI agents handle through a few viewpoints, which keeps learning from use, and where fast, deterministic, shared work stays in external tools (SaaS) while judgment and glue come from the AI.
 2. **The name.** Personal, Agentic, Retrieval, Operating System. Stress the R: knowledge is worth what you can bring back at the right moment.
 3. **Five ideas that carry everything** (one short paragraph each, then ask if it makes sense):

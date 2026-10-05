@@ -9,6 +9,7 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 ## Foundations
 | Playbook | What you get | Status |
 |---|---|---|
+| [`start-from-zero`](start-from-zero.md) | No notes yet: Obsidian installed, a vault, your agent working in it, the areas of your life in one place, a first useful result, phone, cost and privacy explained; Obsidian first, no commands to type | **ready** |
 | [`organise-your-knowledge`](organise-your-knowledge.md) | Areas instead of projects, frontmatter with content descriptions, an entry file your agents read | **ready** |
 | [`task-inbox`](task-inbox.md) | One task list with an inbox you drop things into unformatted; the agent sorts them | **ready** |
 | `project-state` | One current-state file per long-running project or area | ready (skill: `skills/project-state`) |

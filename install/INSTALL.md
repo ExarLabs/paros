@@ -20,7 +20,10 @@ A person sent you here (or to https://ignis.academy/paros) to install the PAROS 
    python ~/.paros-advisor/install/install.py
    ```
    (use `python3` if that is the name on their system). It works the same for a cloned and a downloaded copy. It writes the command for Claude Code (`~/.claude/commands/paros.md`) and, if Codex is used on this machine, for Codex (`~/.codex/prompts/paros.md`). It never touches their notes.
-4. **Tell the person:** "The PAROS Advisor is installed. Open a new session in your notes folder and type `/paros` (or `/paros <your question>`). It updates itself each time you use it."
-5. If they want to start right away in this session, read `~/.paros-advisor/AGENTS.md` and begin with the tour.
+4. **Tell the person, in their language** (the install sentence is English by design; if you cannot tell their language, ask in one short line), that the advisor is installed and updates itself each time it is used. Then ask **one** question: do they already have a notes folder (for example an Obsidian vault)?
+   - **Yes, and this session is in it:** offer to start right here (step 5).
+   - **Yes, elsewhere:** explain how to open a session in that folder (Claude desktop app: the Code tab, a new session, choose that folder; terminal users: `cd` there and start the agent), then type `/paros`.
+   - **No, or unsure:** offer to start from zero right now, in this session, with `~/.paros-advisor/playbooks/start-from-zero.md`: Obsidian first, one step at a time, no commands to type.
+5. To start in this session, read `~/.paros-advisor/AGENTS.md` and follow it (the tour, or start-from-zero for someone without notes).
 
 To remove: `python ~/.paros-advisor/install/install.py --uninstall`, then delete `~/.paros-advisor`.

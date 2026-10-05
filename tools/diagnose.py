@@ -7,12 +7,19 @@ is changed. Secret-like patterns are reported by file and type only, never by va
 
     python diagnose.py <vault>                    # text map
     python diagnose.py <vault> --json out.json    # also write the full result as JSON
+    python diagnose.py <vault> --exclude Private --exclude "Work/HR"   # never enter these folders
+
+Private or off-limits folders: pass them with --exclude (repeatable), or list them in an ignore file the
+scanner always reads: <vault>/.parosignore or <vault>/PAROS/.parosignore (one path per line, relative to
+the vault, '#' starts a comment). Excluded folders are not walked and no file in them is opened; the
+report lists the excluded paths (names only), so the owner can see the boundary held.
 """
 import argparse
 import json
 import os
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 try:
@@ -54,12 +61,49 @@ def is_link(path):
         return False
 
 
-def walk(root):
+def norm(rel):
+    rel = unicodedata.normalize("NFC", rel.replace("\\", "/")).strip().strip("/")
+    return rel.lower() if os.name == "nt" else rel
+
+
+def load_excludes(root, extra=()):
+    """Paths from --exclude plus the ignore files: {normalised path: path as written}."""
+    out = {}
+    for f in (Path(root) / ".parosignore", Path(root) / "PAROS" / ".parosignore"):
+        try:
+            for line in f.read_text(encoding="utf-8").splitlines():
+                line = line.split("#", 1)[0].strip()
+                if line:
+                    out[norm(line)] = line.strip("/")
+        except Exception:
+            pass
+    for e in extra or ():
+        e = str(e)
+        try:
+            e = Path(e).resolve().relative_to(Path(root).resolve()).as_posix() if Path(e).is_absolute() else e
+        except ValueError:
+            pass
+        out[norm(e)] = e.replace("\\", "/").strip("/")
+    out.pop("", None)
+    return out
+
+
+def excluded(rel, excludes):
+    r = norm(rel)
+    return any(r == e or r.startswith(e + "/") for e in excludes)
+
+
+def walk(root, excludes=frozenset()):
+    root = Path(root)
     for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS and not is_link(os.path.join(dirpath, d))]
+        reldir = Path(dirpath).relative_to(root).as_posix()
+        reldir = "" if reldir == "." else reldir + "/"
+        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS and not is_link(os.path.join(dirpath, d))
+                       and not excluded(reldir + d, excludes)]
         DIR_COUNTS["observations"] += sum(1 for d in dirnames if d == "observations")
         for f in filenames:
-            yield Path(dirpath) / f
+            if not excluded(reldir + f, excludes):
+                yield Path(dirpath) / f
 
 
 def read(p, limit=1_000_000):
@@ -87,15 +131,16 @@ def strip_code(text):
     return re.sub(r"```.*?```", "", text, flags=re.S)
 
 
-def scan(root):
+def scan(root, exclude=()):
     root = Path(root).resolve()
+    excludes = load_excludes(root, exclude)
     r = {"vault": str(root), "files": 0, "md": 0, "bytes": 0, "md_bytes": 0,
          "frontmatter": 0, "description": 0, "good_description": 0,
          "archive_dirs": [], "archive_files": 0, "learnings": 0, "observations_dirs": 0,
          "current_md": 0, "skills": [], "agents": [], "secret_hits": [], "secrets_inventory": False,
          "health_files": [], "source_map": [], "double_frontmatter": [], "search_index_hint": [],
-         "memory_index": [], "cognition_registry": False}
-    for p in walk(root):
+         "memory_index": [], "cognition_registry": False, "excluded": sorted(set(excludes.values()))}
+    for p in walk(root, excludes):
         rel = p.relative_to(root).as_posix()
         r["files"] += 1
         try:
@@ -152,7 +197,7 @@ def scan(root):
             if re.search(r"(?m)^---\s*\n(?:title|date|description):", body):
                 r["double_frontmatter"].append(rel)
     for d in root.iterdir() if root.exists() else []:
-        if d.is_dir() and "archiv" in d.name.lower():
+        if d.is_dir() and "archiv" in d.name.lower() and not excluded(d.name, excludes):
             r["archive_dirs"].append(d.name)
     r["observations_dirs"] = DIR_COUNTS["observations"]
     entry = {}
@@ -214,12 +259,15 @@ def main():
     ap = argparse.ArgumentParser(description="PAROS vault diagnosis (read-only)")
     ap.add_argument("vault")
     ap.add_argument("--json")
+    ap.add_argument("--exclude", action="append", default=[], help="folder (relative to the vault) never to enter; repeatable")
     a = ap.parse_args()
-    r = scan(a.vault)
+    r = scan(a.vault, a.exclude)
     L = levels(r)
     print(f"PAROS DIAGNOSIS  {r['vault']}")
     print(f"{r['files']} files, {r['md']} markdown, {r['bytes'] / 1e6:.0f} MB "
           f"(markdown {r['md_bytes'] / 1e6:.0f} MB)")
+    if r["excluded"]:
+        print("Excluded, not opened: " + ", ".join(r["excluded"]))
     print("-" * 72)
     for pid, (lvl, ev) in L.items():
         bar = "?? " if lvl is None else LEVEL_BLOCKS[lvl]

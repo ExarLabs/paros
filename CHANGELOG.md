@@ -2,6 +2,20 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.10.0 (2026-10-05)
+
+Lessons from the first live simulation (a complete beginner and a person with a messy existing vault, played by another AI against the real advisor):
+
+- New playbook **start-from-zero**, Obsidian first: notes, vault, Obsidian, the agent and PAROS in plain words; installing Obsidian; creating the vault; opening the agent inside it; every area of life in one place; a minimal structure created piece by piece with a yes; a first useful result; how it grows; phone, cost, backup and stopping; saving the session for the next one.
+- **Every durable write is a small transaction** (AGENTS.md safety rule 7): file, why, exact effect, how to undo, then a yes. A yes covers exactly what was shown, never an extra log, folder or rule.
+- **Privacy said accurately** (rule 8): the notes stay local and nothing is published, but what the agent reads goes to the AI service behind it; PAROS maintainers have no access; sync and connectors are separate.
+- **Off-limits folders as a technical boundary** (rule 9): `tools/diagnose.py --exclude` and `PAROS/.parosignore`; the diagnosis asks about private folders before scanning and prints what it excluded.
+- **Learning starts as a proposal** (rule 10), and some kinds of rules are never learned silently.
+- The diagnosis no longer pushes headers onto existing notes: metadata only where real retrieval fails.
+- The agent now notices gaps in the advisor by itself and offers to report them at a natural pause.
+- After installing, the agent answers in the person's language and asks whether a notes folder exists; without one, it offers to start from zero.
+- To review: if you keep a private folder in your vault, add it to `PAROS/.parosignore`. If your agent created a file without asking, tell it; the rule now forbids it.
+
 ## 0.9.0 (2026-10-05)
 
 - **No GitHub account needed, for anything.** Install and updates work without git: the installer downloads the repository as a zip from GitHub and refreshes it the same way later, keeping your local settings (`install/install.py`, new `--update`; `/paros` now updates through it). One-line bootstrap without git in [`install/INSTALL.md`](install/INSTALL.md).
