@@ -2,6 +2,13 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.4.0 (2026-10-05)
+
+- New kits, working and tested: `thin-entry` (build thin skill entries with the "vault always wins" version report, promote with snapshots, a learning digest), `search` (a standalone FTS5 index outside the vault and ranked search), `health` (canary, index, secrets, frontmatter, learning cycle and backup checks, alerts only on state change).
+- New skills: `think` (several AIs on one question, with a state file), `transcribe` (Groq Whisper with a completeness check), `speed-reader`, `language-editor`.
+- New convention, **recipe and spice**: the general procedure is in `CURRENT.md`; personal settings go into `LOCAL.md` (shipped as `LOCAL.example.md`), which never leaves your vault and is never touched by updates.
+- To review: if you adopted a skill earlier, move anything personal from its `CURRENT.md` into a `LOCAL.md`, so future updates merge cleanly.
+
 ## 0.3.0 (2026-10-05)
 
 - New kits, working and tested: `view` (no app, a zero-build Node.js view with search, note preview, tasks written back to markdown and live refresh, or step-by-step React instructions on the same API), `learn-merge` (typed rule changes without compaction, plus the independent judge), `cognition` (weighted rules and the cognitive cycle), `secrets` (inventory without values).

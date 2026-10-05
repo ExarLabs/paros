@@ -9,6 +9,10 @@ These are skills from a PAROS in daily use, cleaned of personal data and written
 | [`frontmatter-header`](frontmatter-header/) | Writes or repairs a note's frontmatter, with a description about the content | Your notes are hard to find, or the agent opens too many files to answer a question | P01, P06 |
 | [`project-state`](project-state/) | Keeps one current-state file per project or area: where it stands, next step, open questions, decisions | You lose the thread between sessions, or every session starts with "where were we?" | P01, P12 |
 | [`adversarial-second-pass`](adversarial-second-pass/) | A fresh-eyes reviewer that tries to break an important result before you rely on it | Meeting notes, decisions, numbers or documents that others will act on | P05, P11 |
+| [`think`](think/) | Thinks a hard question through with several AIs at once (researcher, strategist, validator), with a state file as the durable memory | Strategy, research or a decision where one model's answer is not enough | P01, P05 |
+| [`transcribe`](transcribe/) | Audio, video or YouTube to text (Groq Whisper), with a completeness check; the raw transcript is kept as evidence | Meetings, voice memos, interviews, podcasts | P01, P11 |
+| [`speed-reader`](speed-reader/) | Reads a book, article or episode into a structured note: thesis, chapters, quotes with sources, questions | You want the substance of something long, in your vault, searchable | P01, P06 |
+| [`language-editor`](language-editor/) | A native-quality editor for any language; your own language rules live in `LOCAL.md` | Texts that go out to people: posts, letters, course material | P04 |
 
 Ask your agent, in any language:
 
@@ -17,6 +21,10 @@ Ask your agent, in any language:
 > Adopt the project-state skill into my vault and set it up for my main project.
 
 More are on the way (see `kits/` for the larger machinery: learning, search, health, secrets, view).
+
+## Recipe and spice
+
+A skill has two parts. **The recipe** (`CURRENT.md`) is the general procedure: shared here, improved over time. **The spice** (`LOCAL.md`) is yours: your names, accounts, folders, tone, language rules. Where a skill needs personal settings, it ships a `LOCAL.example.md` with made-up values; at adoption you copy it to `LOCAL.md` and fill it in. `LOCAL.md` never leaves your vault, and updates from here never touch it.
 
 ## How a skill becomes yours
 
