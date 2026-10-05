@@ -23,7 +23,7 @@ The name is the idea:
 2. **Build.** It sets things up with you, step by step: a search index, sync and backup, connectors to your tools, and a small local web view of your vault (Node.js, no build step, for beginners; React when you want more).
 3. **Advise.** Practical wisdom on working with AI, from 28 tips around four human dimensions, adapted to your situation; and playbooks for what people actually do with PAROS.
 
-When it finds a gap in itself, it asks you once whether to report it to the maintainers, in your language, and you can tell it never to ask again.
+When it finds a gap in itself, it asks you once whether to report it to the maintainers, in your language, and you can tell it never to ask again. Reports go straight to the maintainers' inbox; you do not need a GitHub account.
 
 ## If you are an AI agent reading this
 
@@ -49,7 +49,7 @@ Tell your AI agent (Claude Code or Codex), in any language:
 
 > Read https://ignis.academy/paros and install the PAROS Advisor.
 
-It downloads this repository into `~/.paros-advisor` and installs the **`/paros`** command. From then on, in any session in your notes folder, type `/paros` for the menu, or `/paros <your question>`: what is my vault behind on, how do I connect a tool, how do I build a dashboard, how do I organise my knowledge. The advisor updates itself each time you use it and tells you what is new. Details: [`install/INSTALL.md`](install/INSTALL.md).
+It downloads this repository into `~/.paros-advisor` (with git, or as a zip without it; no GitHub account needed) and installs the **`/paros`** command. From then on, in any session in your notes folder, type `/paros` for the menu, or `/paros <your question>`: what is my vault behind on, how do I connect a tool, how do I build a dashboard, how do I organise my knowledge. The advisor updates itself each time you use it and tells you what is new. Details: [`install/INSTALL.md`](install/INSTALL.md).
 
 ## Quick start (by hand)
 

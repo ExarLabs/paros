@@ -2,6 +2,12 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.9.0 (2026-10-05)
+
+- **No GitHub account needed, for anything.** Install and updates work without git: the installer downloads the repository as a zip from GitHub and refreshes it the same way later, keeping your local settings (`install/install.py`, new `--update`; `/paros` now updates through it). One-line bootstrap without git in [`install/INSTALL.md`](install/INSTALL.md).
+- **Feedback goes straight to the maintainers by default,** through ignis.academy into the maintainers' CRM: no account, no login, and nobody but the maintainers can read what arrives. An email address is sent only if you agree to be contacted. GitHub stays available (`--via github` for a pull request, `--via issue` for an issue page).
+- To review: nothing to do. If you installed before 0.9.0 with git, run the installer once (`python ~/.paros-advisor/install/install.py`) to refresh the `/paros` command.
+
 ## 0.8.0 (2026-10-05)
 
 - **Feedback that improves the advisor, without spam.** When the advisor notices a gap in itself (a missing playbook, a wrong instruction, a failing kit, a better way), it asks you once, in your language: report it to the maintainers? (yes / no / never ask again). With your yes it shows you the exact text, checks it for personal data, and sends it: as a pull request from your own fork if the GitHub CLI is signed in, otherwise as a pre-filled issue you submit yourself. At most one question a day, never twice about the same topic, nothing after "never". `tools/feedback.py`, `proposals/`, `CONTRIBUTING.md`.

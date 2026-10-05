@@ -9,14 +9,17 @@ PAROS Advisor"); a person can also run it by hand.
     python feedback.py asked --topic <slug> --answer yes|no|never
     python feedback.py optout                     # never ask again (on this machine)
     python feedback.py optin                      # allow asking again
-    python feedback.py submit --title "..." --body-file report.md [--kind improvement|missing|bug] [--dry-run]
+    python feedback.py submit --title "..." --body-file report.md [--kind improvement|missing|bug]
+                              [--language hu] [--contact-email x@y --consent] [--via crm|github|issue] [--dry-run]
 
-How a report reaches the maintainers:
-- with the GitHub CLI (`gh`, signed in): forks the repository if needed, creates a branch
+How a report reaches the maintainers (no account needed by default):
+- by default: straight into the maintainers' inbox (through ignis.academy into the maintainers' CRM; no login,
+  nobody but the maintainers can read what arrives);
+- with `--via github` and the GitHub CLI (`gh`, signed in): forks the repository if needed, creates a branch
   `proposal/<date>-<slug>` in the fork, adds `proposals/<date>-<slug>.md`, and opens a pull request.
   Nobody but the maintainers can change `main`; a pull request is only a proposal.
-- without it: prints (and tries to open) a pre-filled "new issue" page; the person reviews it in
-  their browser and clicks Submit themselves.
+- if both fail: prints (and tries to open) a pre-filled "new issue" page; the person reviews it in
+  their browser and clicks Submit themselves (needs a GitHub account).
 
 Settings live next to this repository copy, in `.feedback.json` (ignored by git, never uploaded).
 Rules that keep it quiet: at most one question per day, never twice about the same topic,
@@ -31,6 +34,7 @@ import subprocess
 import sys
 import tempfile
 import urllib.parse
+import urllib.request
 import webbrowser
 from pathlib import Path
 
@@ -40,6 +44,7 @@ except Exception:
     pass
 
 REPO = "ExarLabs/paros-advisor"
+INBOX_URL = "https://ignis.academy/api/paros-feedback"  # forwards to the maintainers' CRM inbox
 ROOT = Path(__file__).resolve().parents[1]
 SETTINGS = ROOT / ".feedback.json"
 MIN_HOURS_BETWEEN_ASKS = 24
@@ -138,6 +143,36 @@ def submit_with_gh(title, body, kind, dry):
     return pr.stdout.strip()
 
 
+def advisor_version():
+    try:
+        return (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    except Exception:
+        return ""
+
+
+def submit_to_crm(title, body, kind, language, contact, consent, dry):
+    data = {"title": title[:140], "kind": kind, "body": body.strip(),
+            "advisor_version": advisor_version(), "language": language or ""}
+    if contact and consent:
+        data["contact_email"] = contact
+        data["consent_contact"] = True
+    if dry:
+        return "[dry-run] would send to the maintainers' inbox: " + json.dumps({k: v for k, v in data.items() if k != "body"}, ensure_ascii=False)
+    req = urllib.request.Request(INBOX_URL, data=json.dumps(data).encode(), method="POST")
+    req.add_header("Content-Type", "application/json")
+    req.add_header("Accept", "application/json")
+    req.add_header("User-Agent", "paros-feedback/1.0")
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            msg = json.loads(r.read().decode() or "{}")
+    except Exception as e:
+        raise RuntimeError(f"the maintainers' inbox did not accept it ({e})")
+    ref = msg.get("name") if isinstance(msg, dict) else None
+    if not ref:
+        raise RuntimeError("the maintainers' inbox gave no reference number")
+    return f"sent to the PAROS maintainers (reference {ref})"
+
+
 def issue_url(title, body, kind):
     q = urllib.parse.urlencode({"title": f"[{kind}] {title}", "body": body.strip() + "\n\n(Sent from the PAROS Advisor feedback flow.)",
                                 "labels": f"proposal,{kind}"})
@@ -153,7 +188,9 @@ def main():
     sp.add_parser("optout"); sp.add_parser("optin")
     p = sp.add_parser("submit"); p.add_argument("--title", required=True); p.add_argument("--body-file", required=True)
     p.add_argument("--kind", default="improvement", choices=["improvement", "missing", "bug"]); p.add_argument("--dry-run", action="store_true")
-    p.add_argument("--no-gh", action="store_true", help="skip the GitHub CLI and use the issue page")
+    p.add_argument("--via", default="crm", choices=["crm", "github", "issue"], help="crm (default, no account), github (pull request, needs gh), issue (GitHub page)")
+    p.add_argument("--language", default=""); p.add_argument("--contact-email", default=""); p.add_argument("--consent", action="store_true")
+    p.add_argument("--no-gh", action="store_true", help=argparse.SUPPRESS)
     a = ap.parse_args()
     s = load()
 
@@ -184,7 +221,22 @@ def main():
             print("STOP: the report seems to contain personal data: " + ", ".join(sorted(set(leaks))) +
                   ". Remove it, show the person the cleaned text, and try again.")
             sys.exit(2)
-        if not a.no_gh and shutil.which("gh"):
+        if a.contact_email and private_findings(a.contact_email) and not a.consent:
+            print("STOP: a contact email is only sent with --consent (the person agreed to be contacted).")
+            sys.exit(2)
+        via = "issue" if a.no_gh and a.via == "github" else a.via
+        if via == "crm":
+            try:
+                result = submit_to_crm(a.title, body, a.kind, a.language, a.contact_email, a.consent, a.dry_run)
+                print(result)
+                if not a.dry_run:
+                    s.setdefault("reports", []).append({"title": a.title, "at": now().isoformat(timespec="seconds"), "via": "crm", "ref": result})
+                    save(s)
+                return
+            except RuntimeError as e:
+                print(f"{e}; trying the GitHub route instead.")
+                via = "github"
+        if via == "github" and shutil.which("gh"):
             try:
                 result = submit_with_gh(a.title, body, a.kind, a.dry_run)
                 print(result)
