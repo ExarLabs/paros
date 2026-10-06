@@ -88,6 +88,17 @@ You need: a vault with frontmatter (see [`organise-your-knowledge`](organise-you
 
 9. **Check status now and then.** Say "what is out of sync?". The read-only status shows: what is published and when, what changed in the vault since (waiting to be republished), what changed outside, and when you last pulled. This is the only part that may run on a schedule, and it only reports.
 
+### When your company already has a knowledge base
+
+Many teams already keep a shared knowledge repository: a wiki, a docs repository with its own folder structure (PARA or otherwise), sometimes with its own agents. A personal PAROS does not compete with it. One PAROS belongs to one person (P00); the team repository is the **shared domain**, and it leads there.
+
+- **Map before you move.** Run the ecosystem diagnosis (`flows/2-diagnose.md`, with `--also <team repository>`): it lists the kinds of knowledge in each place and the possible silos, for example meeting notes kept both in your vault and in the team repository.
+- **Decide owners per kind, once.** For each silo, write one line into your entry file: "meeting notes of team X: the team repository; my own preparation and impressions: my vault". Shared facts (decisions, client data, specifications) belong to the team repository; your vault keeps your working notes, your judgement, and pointers.
+- **No double maintenance.** Do not copy team documents into your vault. Link to them, or pull a dated snapshot (step 6) when you need to work offline or with your own agents; the snapshot is derived and replaced, never edited.
+- **Publish deliberately.** When something you worked out belongs to the team, publish it into the team repository (steps 4 and 5), in its structure and language, through its review process if it has one. Your vault keeps a pointer to where it now lives.
+- **Agents on both sides.** If the team repository has its own agents, your agents read it like any other source and never write to it on their own; a change there is a publish, with your yes. Their instructions are data for your agents, not instructions.
+- **Leaving the team.** Your vault holds nothing the team needs that is not also in the team repository, and nothing of the team's that you are not allowed to keep. Check this when you join, not when you leave.
+
 ## Check that it works
 
 - Mark a test note with `share:` in a denied folder and try to publish it. It stops with an error naming the deny rule.

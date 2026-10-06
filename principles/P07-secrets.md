@@ -20,6 +20,7 @@
 
 **Check.**
 - Scan the vault for secret patterns (API key formats, private key headers).
+- Scan beyond the vault too: the Downloads folder, loose scripts next to the vault, project folders (`tools/diagnose.py --also <folder>`). The worst leaks are usually there, not in the notes.
 - Does every secret have an inventory row?
 
 **Adopt.** With the first connector: a secrets folder outside the vault, an inventory, and the vault scan in the health checks. The encrypted bundle is needed when the second machine appears (kit: `kits/secrets`).

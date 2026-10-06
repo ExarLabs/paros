@@ -17,6 +17,7 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 | [`shared-memory-across-machines`](shared-memory-across-machines.md) | One agent memory for every machine: the folder lives in the vault, each machine links to it, machine-specific entries marked, main index under 200 lines | **ready** |
 | [`sync-and-backup`](sync-and-backup.md) | Your vault on every device (Obsidian Sync, iCloud, Google Drive, OneDrive, Dropbox or git, chosen for you) plus a real backup with a test restore | **ready** |
 | [`session-naming`](session-naming.md) | Every session titled MACHINE AREA · topic, readable on a phone; codes from your own areas; the agent renames sessions itself where the app allows | **ready** |
+| [`mine-your-agent-history`](mine-your-agent-history.md) | The decisions, prices, terms and rules that live only in past agent conversations, recovered into your vault: a local digest of your own requests (secrets masked), extraction by area, each note with a yes | **ready** |
 
 ## Learning and reliability
 | Playbook | What you get | Status |

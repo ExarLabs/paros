@@ -2,6 +2,17 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.13.0 (2026-10-06)
+
+From the first proposal sent by a user through the advisor's feedback (thank you):
+
+- **Diagnose the whole knowledge ecosystem:** `tools/diagnose.py --also <folder>` (repeatable) scans project repositories, a team knowledge base, Downloads or loose scripts next to the vault, read-only: size, entry files, kinds of knowledge, secret-like patterns. The report lists **possible knowledge silos** (the same kind of knowledge in several places) and counts them under P12. Each extra folder honours its own `.parosignore` and absolute `--exclude` paths. Flow: `flows/2-diagnose.md` step 0b.
+- **New playbook `mine-your-agent-history`** and **`tools/agent_history.py`**: a local, read-only digest of your past agent sessions (Claude Code, also inside WSL): your own requests and the stored session summaries, secrets masked, nothing sent anywhere, only counts printed; then extraction by area and new notes only with a yes.
+- **`share-with-your-team`:** a new section for when your company already has a knowledge base: map the silos, decide owners per kind once, no double maintenance, publish deliberately, agents on both sides.
+- **P07:** scan for secrets beyond the vault too (Downloads, loose scripts, project folders).
+- The feedback form now keeps text after angle brackets (`<path>`); before, everything after the first `<` was cut off.
+- To review: if your knowledge lives in several places, ask `/paros diagnose my whole ecosystem`.
+
 ## 0.12.0 (2026-10-05)
 
 A full pass over the maintainers' own PAROS (every slash command, skill, capability, principle note and memory rule), publishing what is general and not personal.
