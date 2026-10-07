@@ -2,6 +2,13 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.14.0 (2026-10-07)
+
+- **Anonymous usage ping.** Each installer run (install, and every `/paros`, which starts with `install.py --update`) sends one ping: event (install, update or use), version, previous version, operating system, language, agent app, install method. No identifier, no IP stored, no content from your vault; the server adds only the day and the country. It tells the maintainers how many people use the advisor and which versions and systems to support. Everything is in the new [PRIVACY.md](PRIVACY.md).
+- **Turn it off** with `PAROS_NO_PING=1` or an empty `.no-ping` file in the advisor folder; updates keep the file.
+- The installer says so in one line at the end, and the agent mentions it in one sentence after installing.
+- To review: nothing to change in your vault. If you prefer no ping, create `~/.paros-advisor/.no-ping`.
+
 ## 0.13.0 (2026-10-06)
 
 From the first proposal sent by a user through the advisor's feedback (thank you):

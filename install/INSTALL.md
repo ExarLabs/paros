@@ -22,7 +22,7 @@ A person sent you here (or to https://ignis.academy/paros) to install the PAROS 
    python ~/.paros-advisor/install/install.py
    ```
    (use `python3` if that is the name on their system). It works the same for a cloned and a downloaded copy. It writes the command for Claude Code (`~/.claude/commands/paros.md`) and, if Codex is used on this machine, for Codex (`~/.codex/prompts/paros.md`). It never touches their notes.
-4. **Tell the person, in their language** (the install sentence is English by design; if you cannot tell their language, ask in one short line), that the advisor is installed and updates itself each time it is used. Then ask **one** question: do they already have a notes folder (for example an Obsidian vault)?
+4. **Tell the person, in their language** (the install sentence is English by design; if you cannot tell their language, ask in one short line), that the advisor is installed and updates itself each time it is used, and in one plain sentence that each use sends an anonymous count (version, system, language; no name, no content) which they can turn off any time (`PRIVACY.md`). Then ask **one** question: do they already have a notes folder (for example an Obsidian vault)?
    - **Yes, and this session is in it:** offer to start right here (step 5).
    - **Yes, elsewhere:** explain how to open a session in that folder (Claude desktop app: the Code tab, a new session, choose that folder; terminal users: `cd` there and start the agent), then type `/paros`.
    - **No, or unsure:** offer to start from zero right now, in this session, with `~/.paros-advisor/playbooks/start-from-zero.md`: Obsidian first, one step at a time, no commands to type.

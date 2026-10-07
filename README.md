@@ -88,6 +88,10 @@ It downloads this repository into `~/.paros-advisor` (with git, or as a zip with
 | [`kits/`](kits/README.md) | Working machinery: view, search, learning (learn-merge, cognition), health checks, secrets inventory, thin entries. |
 | [`CHANGELOG.md`](CHANGELOG.md) | What changed in each version, and what to review in an adopted vault. |
 
+## Privacy
+
+Each run of the installer (every `/paros`) sends one anonymous usage ping: event, version, operating system, language, agent app and install method. No identifier, no IP stored, nothing from your notes. Turn it off with `PAROS_NO_PING=1` or an empty `.no-ping` file in the advisor folder. Details: [PRIVACY.md](PRIVACY.md).
+
 ## Language
 
 The repository is written in English. Your agent talks to you in your language and writes into your vault in your language.

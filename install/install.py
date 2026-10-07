@@ -16,9 +16,15 @@ What it does:
    - Claude Code: ~/.claude/commands/paros.md        (type /paros in any session)
    - OpenAI Codex: ~/.codex/prompts/paros.md          (a custom prompt; type /prompts:paros or /paros, depending on the version)
 3. Prints what it did. It never touches your vault.
+4. Sends one anonymous usage ping (event, version, OS, language, agent app, install method; no identifier,
+   no IP stored, no content). Details and opt-out (PAROS_NO_PING=1 or a .no-ping file): PRIVACY.md.
 """
 import argparse
 import io
+import json
+import locale
+import os
+import platform
 import re
 import shutil
 import subprocess
@@ -36,7 +42,9 @@ except Exception:
 REPO_URL = "https://github.com/ExarLabs/paros-advisor.git"
 ZIP_URL = "https://codeload.github.com/ExarLabs/paros-advisor/zip/refs/heads/main"
 ZIP_MARK = ".paros-zip"  # marks a copy that came from the zip, so it may be refreshed in place
-KEEP = {".feedback.json", ".last-seen", ZIP_MARK}
+NO_PING = ".no-ping"  # put this file in the advisor folder (or set PAROS_NO_PING=1) to turn the usage ping off
+PING_URL = os.environ.get("PAROS_PING_URL", "https://ignis.academy/api/paros-ping")
+KEEP = {".feedback.json", ".last-seen", ZIP_MARK, NO_PING}
 HERE = Path(__file__).resolve().parent
 
 
@@ -87,6 +95,46 @@ def ensure_repo(target: Path):
     return "updated (zip)" if zip_copy else "downloaded (zip, no git needed)"
 
 
+def read_version(target: Path):
+    try:
+        return (target / "VERSION").read_text(encoding="utf-8").strip()
+    except Exception:
+        return ""
+
+
+def agent_app():
+    if os.environ.get("CLAUDECODE") or os.environ.get("CLAUDE_CODE_ENTRYPOINT"):
+        return "claude-code"
+    if any(k.startswith("CODEX") for k in os.environ):
+        return "codex"
+    return "unknown"
+
+
+def ping(target: Path, event: str, version: str, from_version: str):
+    """Anonymous usage ping (see PRIVACY.md). Silent, short timeout, never blocks the update."""
+    if os.environ.get("PAROS_NO_PING") or (target / NO_PING).exists():
+        return
+    try:
+        lang = (locale.getlocale()[0] or "")[:30]
+    except Exception:
+        lang = ""
+    body = {"event": event, "version": version, "from_version": from_version if from_version != version else "",
+            "os": platform.system(), "os_release": platform.release(), "agent": agent_app(), "language": lang,
+            "install_method": "git" if (target / ".git").exists() else "zip"}
+    try:
+        req = urllib.request.Request(PING_URL, data=json.dumps(body).encode(), method="POST",
+                                     headers={"Content-Type": "application/json", "User-Agent": "paros-advisor-installer"})
+        urllib.request.urlopen(req, timeout=4).read()
+    except Exception:
+        pass
+
+
+def event_for(status: str, before: str, after: str):
+    if status.startswith(("cloned", "downloaded")):
+        return "install"
+    return "update" if before and after and before != after else "use"
+
+
 def existing_target(cmd: Path):
     """The advisor folder an installed /paros command points to, if any."""
     try:
@@ -122,8 +170,11 @@ def main():
         print(f"the repository copy stays at {target}; delete it by hand if you want")
         return
 
+    before = read_version(target)
     if a.update:
-        print(f"PAROS Advisor: {ensure_repo(target)}")
+        status = ensure_repo(target)
+        print(f"PAROS Advisor: {status}")
+        ping(target, event_for(status, before, read_version(target)), read_version(target), before)
         # refresh the /paros command files that point to this copy, so changes to the command reach everyone
         text = command_text(target)
         for name, d in homes.items():
@@ -132,7 +183,9 @@ def main():
                 f.write_text(text, encoding="utf-8")
                 print(f"/paros refreshed for {name}")
         return
-    print(f"PAROS Advisor: {ensure_repo(target)} at {target}")
+    status = ensure_repo(target)
+    print(f"PAROS Advisor: {status} at {target}")
+    ping(target, event_for(status, before, read_version(target)), read_version(target), before)
     text = command_text(target)
     installed = 0
     for name, d in homes.items():
