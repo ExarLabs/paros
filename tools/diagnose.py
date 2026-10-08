@@ -49,6 +49,99 @@ SECRET_PATTERNS = [
     ("Private key", r"-----BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY-----"),
     ("Token in URL", r"https://[^/\s:@]+:[^/\s@]{16,}@"),
 ]
+# Credential labels followed by a value ("password: x", "jelszó = x", "DB_PASSWORD=x"). Matched on accent-stripped
+# text, so "jelszó" and "jelszo" are the same. A value is one token at the end of the line or before , ; |
+# (prose such as "password: never stored here" is not a hit), and placeholders are skipped.
+SECRET_LABELS = [
+    ("English", r"pass(?:word|wd|phrase|code)|api[ _-]?key|secret[ _-]?key|client[ _-]?secret|(?:access|auth|bearer)[ _-]?token"),
+    ("Hungarian", r"jelsz(?:o|av[a-z]*)|jelmondat[a-z]*|titkos[ _-]?kulcs[a-z]*|api[ _-]?kulcs[a-z]*|hozzaferesi[ _-]?(?:kulcs|token)[a-z]*"),
+    ("German", r"passwort|kennwort|geheimer?[ _-]?schlussel"),
+    ("French", r"mot[ _-]de[ _-]passe|cle[ _-]secrete"),
+    ("Romanian", r"parol[ae]|cheie[ _-]secreta"),
+    ("Spanish", r"contrasena|clave[ _-]secreta"),
+]
+# Login labels: not secrets on their own, but a sign that a password-shaped value nearby is a stored login.
+LOGIN_LABELS = (r"user[ _-]?name|user[ _-]?id|login|sign[ _-]?in|e-?mail|"
+                r"felhasznalo(?:nev)?[a-z]*|belepes[a-z]*|bejelentkezes[a-z]*|azonosito[a-z]*|"
+                r"benutzer(?:name)?|anmeldung|identifiant|utilizator|usuario")
+_Q = r"""["'`*]*"""
+LABEL_VALUE = r"\s*(?:[:=]|=>)\s*" + _Q + r"""\s*(?P<v>[^\s"'`*,;|{}\[\]]{4,})""" + _Q + r"\s*(?:[,;|}\]]|$)"
+SECRET_LABEL_RES = [(lang, re.compile(r"(?<![a-z0-9])(?:" + pat + r")" + _Q + LABEL_VALUE, re.I | re.M))
+                    for lang, pat in SECRET_LABELS]
+ANY_LABEL_RE = re.compile(r"(?:^|[,;|])\s*(?:[-*+]\s+)?" + _Q + r"(?P<l>[^\W\d_][\w .'-]{1,28}?)" + _Q + LABEL_VALUE, re.I)
+LOGIN_RE = re.compile(r"(?<![a-z0-9])(?:" + LOGIN_LABELS + r")(?![a-z])[\w .-]{0,20}?" + _Q + r"\s*(?:[:=]|=>)", re.I)
+# labels that name an identifier, a time or an address, never a secret (the login block skips them)
+NOT_SECRET_LABEL = re.compile(r"(?:^|[\s_.-])(?:ids?|date|time|ts|at|on|url|uri|link|ref|handle|query|hash|commit|sha|"
+                              r"version|slug|path|file|name|tag|title|status|phone|tel|channel|show|video|thread|order)$", re.I)
+EMAIL_URL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+|https?://\S+", re.I)
+PLACEHOLDERS = {"none", "null", "nil", "true", "false", "required", "optional", "string", "str", "secret", "password",
+                "redacted", "hidden", "todo", "tbd", "n/a", "example", "your-password", "yourpassword", "undefined",
+                "jelszo", "titkos", "nincs", "rejtett", "keychain", "vault", "env"}
+LABEL_LANGS = [lang for lang, _ in SECRET_LABELS]
+SECRET_COVERAGE = (f"checked known key formats, credential labels in {', '.join(LABEL_LANGS)}, and login blocks "
+                   "(a password-shaped value next to an email or URL) in any language; labels in other languages "
+                   "and multi-word values are not checked")
+
+
+def fold(text):
+    """Accent-stripped text, so labels match with or without diacritics (jelszó, jelszo)."""
+    return "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+
+
+def placeholder(v):
+    v = v.strip()
+    low = v.lower()
+    return (low in PLACEHOLDERS or len(set(low)) <= 2 or re.search(r"[<>{}\[\]()$%]", v) is not None
+            or re.match(r"(?:os\.|process\.|env\.|getenv|settings\.|config\.|self\.|args?\.)", low) is not None)
+
+
+def identifier_like(v):
+    """A word or a name from code (apiKey, GROQ_API_KEY, settings.db.password), not a stored value."""
+    return bool(re.fullmatch(r"[^\W\d_]+", v) or re.fullmatch(r"[A-Za-z]+(?:[_.][A-Za-z]+)+", v)
+                or re.fullmatch(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+", v))
+
+
+def password_shaped(v):
+    """One token that looks like a password rather than a name, date, version, id, slug, path or address."""
+    if (not 6 <= len(v) <= 128 or placeholder(v) or identifier_like(v) or EMAIL_URL_RE.search(v)
+            or re.search(r"[/\\]", v)):
+        return False
+    if not re.search(r"[^\W\d_TZtz]", v) or not (re.search(r"\d", v) or re.search(r"[!#$%&*?+=~^@]", v)):
+        return False                                                    # no letters, or a timestamp (2031-04-01T10:00Z)
+    return not (re.fullmatch(r"v?\d+(?:[.\-]\d+)+[a-z]*", v, re.I)          # version, date
+                or re.fullmatch(r"[0-9a-f]{7,}(?:-[0-9a-f]+)*", v, re.I)    # hash, uuid
+                or re.fullmatch(r"[a-z0-9]+(?:[-_.][a-z0-9]+)+", v)          # slug, model name
+                or re.fullmatch(r"[A-Za-z]+(?:-[A-Za-z]+)*-\d+", v)          # ticket id
+                or re.fullmatch(r"[\w-]+\.[a-z]{2,4}", v, re.I)             # file name
+                or len(re.findall(r"[-_.:]", v)) >= 3                       # record id in groups, dotted name
+                or re.search(r"\d{1,2}:\d{2}|\d{4}[.-]\d{2}[.-]\d{2}", v)   # time or date inside
+                or re.fullmatch(r"[A-Z]{1,4}\d{4,}", v)                     # tax or company code
+                or re.fullmatch(r"[A-Za-z]+(?:-[A-Za-z]+)*-[A-Za-z]+\d*", v)  # hyphenated name
+                or v.endswith("@"))
+
+
+def credential_hits(text, suffix):
+    """Credential labels with a value in the covered languages, and (in notes) a login block in any language:
+    a password-shaped 'label: value' with an email address, a URL or a login label on the same or a nearby line."""
+    hits = []
+    folded = fold(text)
+    for lang, rx in SECRET_LABEL_RES:
+        if any(not placeholder(m.group("v")) and not identifier_like(m.group("v")) for m in rx.finditer(folded)):
+            hits.append(f"Credential label ({lang})")
+    if hits or suffix not in (".md", ".txt"):
+        return hits
+    lines = folded.splitlines()
+    near = [bool(EMAIL_URL_RE.search(x) or LOGIN_RE.search(x)) for x in lines]
+    for i, line in enumerate(lines):
+        if ":" not in line and "=" not in line:
+            continue
+        for m in ANY_LABEL_RE.finditer(line):
+            label = m.group("l").strip()
+            if len(label.split()) > 2 or NOT_SECRET_LABEL.search(label):
+                continue
+            if password_shaped(m.group("v")) and any(near[max(0, i - 2):i + 3]):
+                return ["Login block: password-shaped value next to an email, URL or login label"]
+    return hits
 BOUNDARY_WORDS = [
     r"\bsend", r"\bpublish", r"\bdelet", r"\bmoney|\bpayment", r"\bcredential|\bpassword", r"\bexternal",
     r"küld", r"publik", r"törl", r"pénz", r"hitelesítő|jelszó", r"külső",
@@ -200,6 +293,8 @@ def scan(root, exclude=()):
         for label, pat in SECRET_PATTERNS:
             if re.search(pat, text):
                 r["secret_hits"].append({"file": rel, "type": label})
+        for label in credential_hits(text, p.suffix.lower()):
+            r["secret_hits"].append({"file": rel, "type": label})
         if p.suffix.lower() != ".md":
             continue
         r["md"] += 1
@@ -259,7 +354,8 @@ def levels(r):
     L["P06"] = (None, f"{r['md']} markdown files: {'an index is recommended' if need else 'built-in search is enough for now'}; database files seen: {len(r['search_index_hint'])}")
     sh = len(r["secret_hits"])
     L["P07"] = (0 if sh else (2 if r["secrets_inventory"] else 1),
-                (f"{sh} secret-like patterns in the vault (fix first!)" if sh else "no secret-like patterns found") +
+                (f"{sh} secret-like patterns in the vault (fix first!)" if sh else
+                 f"no matches, which is not proof: {SECRET_COVERAGE}") +
                 f"; inventory: {'yes' if r['secrets_inventory'] else 'no'}")
     L["P08"] = (None, "not measurable; ask which external tools are used")
     L["P09"] = (2 if r["archive_dirs"] and r["archive_files"] else 1 if r["archive_dirs"] else 0,
@@ -321,6 +417,7 @@ def main():
         print("\nSecret-like patterns (values not shown):")
         for h in r["secret_hits"][:20]:
             print(f"  {h['type']}: {h['file']}")
+    print(f"\nSecret scan coverage: {SECRET_COVERAGE}.")
     if others:
         print("\nBEYOND THE VAULT (read-only)")
         for o in others:

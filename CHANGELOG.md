@@ -2,6 +2,16 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.14.1 (2026-10-08)
+
+From a bug report sent through the advisor's feedback (thank you): P07 reported a vault as clean while it held a plaintext login, because the label was not in English.
+
+- **P07 never says "clean" without saying what it checked.** With no match, the evidence now reads "no matches, which is not proof", followed by what was and was not checked; the text report ends with the same coverage line.
+- **Credential labels in six languages**, with or without accents: English, Hungarian (`jelszó` / `jelszo`, `titkos kulcs`, ...), German, French, Romanian, Spanish, in notes, config and code (`password: x`, `DB_PASSWORD=x`, `"api_key": "x"`). Placeholders, references to environment variables and prose ("password: kept in the manager") are not hits.
+- **Login blocks in any language:** in notes, a short `label: value` line with a password-shaped value next to an email address, a URL or a login label (user name, belépés, Benutzername, ...). Dates, versions, ids, slugs, file names and codes are not password-shaped.
+- New tests: `python tools/test_diagnose.py`.
+- To review: run the diagnosis again (`/paros diagnose my vault`). New P07 hits are worth a look even if an earlier run was clean; move what you find into your secret store and delete it from the notes.
+
 ## 0.14.0 (2026-10-07)
 
 - **Anonymous usage ping.** Each installer run (install, and every `/paros`, which starts with `install.py --update`) sends one ping: event (install, update or use), version, previous version, operating system, language, agent app, install method. No identifier, no IP stored, no content from your vault; the server adds only the day and the country. It tells the maintainers how many people use the advisor and which versions and systems to support. Everything is in the new [PRIVACY.md](PRIVACY.md).
