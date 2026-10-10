@@ -2,7 +2,7 @@
 title: connect-microsoft-365
 date: 2026-10-05
 status: active
-description: Playbook for Outlook, Teams and SharePoint from your agents. The official connector for your main tenant, an open-source MCP server or a small script with its own app registration for an extra tenant, device-code login, read scopes first, measured rather than assumed access. Includes Teams and attachment extraction gotchas, a local read-only SharePoint index with deep links, and a working upload and download recipe through short-lived pre-authenticated URLs.
+description: Playbook for Outlook, Teams and SharePoint from your agents, for work and school accounts. A check with IT first (admin approval is often required, with a request template), personal outlook.com accounts routed to connect-any-mailbox, the official connector for your main tenant, an open-source MCP server or a small script with its own app registration for an extra tenant, device-code login, read scopes first, measured rather than assumed access. Includes Teams and attachment extraction gotchas, a local read-only SharePoint index with deep links, and a working upload and download recipe through short-lived pre-authenticated URLs.
 ---
 
 # Playbook: connect Microsoft 365 (Outlook, Teams, SharePoint)
@@ -13,11 +13,41 @@ Your agents can read your Outlook mail and calendar, find a Teams conversation a
 
 ## Before you start
 
+- **Which account is it?** This playbook is for a **work or school account** (an organization's Microsoft 365, signed in with an address like `you@company.example`). A **personal** Microsoft account (`@outlook.com`, `@hotmail.com`, `@live.com`) is a different world: the official connectors and app registrations described here are usually built for work accounts. For a personal account, go to [`connect-any-mailbox`](connect-any-mailbox.md) (IMAP), and check there whether the provider still accepts an app password or now requires a modern sign-in. Not sure which kind you have? Start at [`connect-your-email`](connect-your-email.md).
+- **A work account may need your IT admin's approval.** Many organizations block apps that ask for access to mail, calendar or files until an administrator approves them. You will then see "Admin approval required" (or "Need admin approval") when you connect, even with the official connector. This is a setting of your organization, not an error on your side, and it cannot be worked around from your machine. Check with IT **before** you connect (see "Work account: check with IT first" below).
 - **The official connector first.** Claude and other AI apps offer a Microsoft 365 connector. It usually reaches **one** tenant: the one you sign in with. If that is all you need, use it, read steps 3 and 4 for the gotchas, and stop.
 - **For an extra tenant** you need an **app registration** in that tenant (Microsoft Entra ID). If you are not an admin there, ask the admin; the request is in step 5. Delegated permissions only: the app acts as you, never on its own.
 - Node.js (for an MCP server distributed through npm) or Python 3.9+ with the `msal` package (for the script route).
 - A secrets folder **outside** the vault, for example `~/.paros/secrets/ms365/` (P07).
 - An hour for the official connector and the gotchas; half a day for an extra tenant and the SharePoint index.
+
+## Work account: check with IT first
+
+**Agent:** before the first connection attempt on a work account, asks one question: does your organization let you connect apps to Microsoft 365 yourself, or does an administrator approve them? If you do not know, or the connection already showed "Admin approval required", it drafts a short request for you to send to your IT team yourself. It never contacts IT for you.
+
+A request that worked, in plain words (adapt the names; the agent fills in the app and the permissions it actually asks for):
+
+```
+Subject: Request: admin approval for <app name> (read access to my own mail and calendar)
+
+Hello,
+
+I would like to connect <app name> to my Microsoft 365 account so that an AI assistant
+can read my own mail and calendar and help me prepare replies and meetings.
+When I connect, it shows "Admin approval required".
+
+What it needs: delegated, read-only access to my own data (Mail.Read, Calendars.Read,
+User.Read, offline_access). It acts as me and sees only what I can see. It does not
+send mail and does not change anything without my explicit approval.
+
+Could you approve it for my account, or tell me what the organization's policy is?
+If there is a form or a security review for this, I am happy to fill it in.
+
+Thank you,
+<your name>
+```
+
+**You:** send it yourself, through the channel your organization uses (a ticket, a mail to IT). If the answer is no, the playbook stops here for that account: respect the policy, and do not route around it with a personal forwarding rule or a third-party IMAP bridge. Note the decision in the recipe note, so the agent does not ask again.
 
 ## The shape of it
 
@@ -153,6 +183,8 @@ Why: no token in the chat, no size cap of the "upload content as base64" tools (
 
 ## Pitfalls
 
+- **Connecting a work account before asking IT.** "Admin approval required" is a policy, not a bug; check first and use the request above.
+- **Treating a personal outlook.com account like a work tenant.** Use [`connect-any-mailbox`](connect-any-mailbox.md) instead.
 - **Searching Teams by chat name.** Search the text, or use the link.
 - **The silent attachment fallback.** A wrong URI returns the mail body without an error.
 - **Office attachments as text.** Expect binary; download and convert.
@@ -177,4 +209,4 @@ Why: no token in the chat, no size cap of the "upload content as base64" tools (
 
 - Guide: [`guides/add-a-connector.md`](../guides/add-a-connector.md).
 - Kits: [`secrets`](../kits/secrets/README.md), [`health`](../kits/health/README.md), [`search`](../kits/search/README.md) (the same index-first idea for your vault).
-- Playbooks: [`unified-calendar`](unified-calendar.md) (Outlook calendars in one agenda), [`email-triage`](email-triage.md), [`connect-any-mailbox`](connect-any-mailbox.md), [`meetings`](meetings.md) (uploading notes after a meeting).
+- Playbooks: [`connect-your-email`](connect-your-email.md) (which playbook for which account), [`unified-calendar`](unified-calendar.md) (Outlook calendars in one agenda), [`email-triage`](email-triage.md), [`connect-any-mailbox`](connect-any-mailbox.md), [`meetings`](meetings.md) (uploading notes after a meeting).

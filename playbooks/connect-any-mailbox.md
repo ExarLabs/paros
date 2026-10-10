@@ -13,7 +13,7 @@ Any mailbox that offers IMAP and SMTP (your own domain, a hosting provider's mai
 
 ## Before you start
 
-- **Try the official route first.** If your provider has a connector for your AI tool (Gmail, Microsoft 365), use [`connect-gmail-multiple`](connect-gmail-multiple.md) or [`connect-microsoft-365`](connect-microsoft-365.md). This playbook is for everything else.
+- **Try the official route first.** If your provider has a connector for your AI tool (Gmail, Microsoft 365), use [`connect-gmail-multiple`](connect-gmail-multiple.md) or [`connect-microsoft-365`](connect-microsoft-365.md). This playbook is for everything else, including a personal Microsoft account (`@outlook.com`, `@hotmail.com`, `@live.com`). Not sure which route fits? Start at [`connect-your-email`](connect-your-email.md).
 - The mailbox's **IMAP and SMTP settings** (host, port, SSL or STARTTLS). Your provider's help page or webmail settings show them.
 - An **app password** if the provider supports one (most free webmail providers require it when two-step sign-in is on). Prefer it to your main password: it can be revoked alone.
 - Python 3.8 or newer. Nothing else: the standard library has IMAP, SMTP and email parsing.

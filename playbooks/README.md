@@ -33,8 +33,9 @@ Ask with `/paros <question>`, for example `/paros how do I connect two Gmail acc
 ## Connectors
 | Playbook | What you get | Status |
 |---|---|---|
+| [`connect-your-email`](connect-your-email.md) | Start here for "connect my email": a few questions (which accounts, personal or work, which provider), then the right playbook for each; work accounts checked with IT first | **ready** |
 | [`connect-gmail-multiple`](connect-gmail-multiple.md) | Several Gmail accounts in parallel, each with its own token | **ready** |
-| [`connect-microsoft-365`](connect-microsoft-365.md) | Outlook, Teams and SharePoint, an extra tenant through its own app and device-code login, read scopes first, a local SharePoint index with links | **ready** |
+| [`connect-microsoft-365`](connect-microsoft-365.md) | Outlook, Teams and SharePoint for work accounts: a check with IT first (admin approval, request template), an extra tenant through its own app and device-code login, read scopes first, a local SharePoint index with links | **ready** |
 | [`connect-any-mailbox`](connect-any-mailbox.md) | Any IMAP and SMTP mailbox, password kept outside the vault, sending as a dry run unless approved; safe clean-up: delete only by UID to Trash, never expunge, one-click unsubscribe only, never from spam | **ready** |
 | [`connect-google-workspace`](connect-google-workspace.md) | Sheets, Forms, Drive and Calendar from scripts, several accounts | **ready** |
 | `connect-a-crm` | A CRM as the shared truth: contacts, deals, events, sign-ups synced from forms | planned |

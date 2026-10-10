@@ -2,6 +2,15 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.15.0 (2026-10-10)
+
+From a proposal sent through the advisor's feedback (thank you): three things that made "connect my email" and a Windows install harder than they need to be.
+
+- **New playbook `connect-your-email`:** the starting point for "connect my email". The agent first asks which accounts (personal or work; Gmail, Microsoft 365, outlook.com or another provider), then sends each one to the right playbook: `connect-gmail-multiple`, `connect-microsoft-365` or `connect-any-mailbox`.
+- **`connect-microsoft-365`: check with IT first.** A work account often needs the tenant admin's approval ("Admin approval required"), even for the official connector. The playbook now says so up front, adds a short request template you send to IT yourself, and sends personal Microsoft accounts (`@outlook.com`, `@hotmail.com`, `@live.com`) to `connect-any-mailbox`.
+- **Windows: `py -3` as a fallback.** When `python` is only the Microsoft Store alias ("Python was not found", exit code 49) although Python is installed, `/paros` and the install instructions now try `py -3` instead of stopping.
+- To review: if you asked to connect a work Microsoft 365 account and saw "Admin approval required", ask `/paros connect my email` for the request to IT. On Windows, nothing to do: the next `/paros` refreshes the command.
+
 ## 0.14.1 (2026-10-08)
 
 From a bug report sent through the advisor's feedback (thank you): P07 reported a vault as clean while it held a plaintext login, because the label was not in English.
