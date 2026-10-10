@@ -74,6 +74,7 @@ It downloads this repository into `~/.paros-advisor` (with git, or as a zip with
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | The agent's entry point on every platform. `CLAUDE.md` imports it. |
 | [`flows/`](flows/) | What the agent does: tour, diagnosis, personal guide, adoption, advice, upgrade. |
+| [`explainer/`](explainer/index.html) | An interactive page that explains PAROS and its principles with small animations, in English and Hungarian. Open `explainer/index.html` in a browser. |
 | [`principles/`](principles/README.md) | The principles, one file each: the principle, why, practice, how to check, how to adopt. |
 | [`tools/diagnose.py`](tools/diagnose.py) | A dependency-free scanner that measures a vault against the principles. Read-only. |
 | [`guides/`](guides/) | Practical how-tos (add a connector, add a skill, daily work), the architecture of a PAROS, a glossary, website strategy. |

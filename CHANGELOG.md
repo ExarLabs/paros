@@ -2,6 +2,11 @@
 
 Every entry: what changed, and **what to review in a vault that has already adopted PAROS.**
 
+## 0.15.1 (2026-10-10)
+
+- **New `explainer/`:** an interactive page that explains what PAROS is and walks through the thirteen principles (P00 to P12), each with a short animation, the reason behind it, the practice and an everyday analogy. English and Hungarian (follows the browser language; `?lang=hu` or `?lang=en` forces one). A tour mode plays them in order; the arrow keys step through. Open `explainer/index.html` in any browser, no install.
+- To review: nothing to adopt. Useful when you introduce PAROS to someone else.
+
 ## 0.15.0 (2026-10-10)
 
 From a proposal sent through the advisor's feedback (thank you): three things that made "connect my email" and a Windows install harder than they need to be.

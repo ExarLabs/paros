@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAROS: how it works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper: oklch(97.4% 0.01 75);
+  --paper-2: oklch(94.2% 0.014 75);
+  --paper-3: oklch(90.5% 0.018 75);
+  --ink: oklch(23% 0.02 40);
+  --ink-2: oklch(41% 0.02 40);
+  --ink-3: oklch(59% 0.016 40);
+  --line: oklch(85% 0.014 75);
+  --core: oklch(57% 0.17 33);
+  --core-t: oklch(92.5% 0.045 35);
+  --derived: oklch(52% 0.06 250);
+  --good: oklch(54% 0.12 150);
+  --warn: oklch(56% 0.18 25);
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:1360px;margin:0 auto;padding:0 32px}
+header{padding-top:30px}
+.top{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.kicker{font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(34px,4.6vw,60px);line-height:.98;letter-spacing:-.02em;margin:8px 0 12px}
+h1 em{font-style:normal;color:var(--core)}
+.lede{max-width:66ch;color:var(--ink-2);margin:0 0 6px}
+.acr{display:flex;gap:22px;flex-wrap:wrap;margin:16px 0 0;padding:0;list-style:none}
+.acr li{max-width:23ch;font-size:14.5px;color:var(--ink-2)}
+.acr b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:21px;color:var(--ink)}
+.acr b span{color:var(--core)}
+.lang{margin-left:auto;display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;height:max-content}
+.lang button{border:0;background:transparent;padding:7px 14px;font:inherit;font-size:15px;color:var(--ink-2);cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--paper-3);color:var(--ink);font-weight:700}
+nav.groups{margin-top:26px;display:grid;grid-template-columns:repeat(6,minmax(0,auto));gap:10px 26px;align-items:start}
+.grp h4{margin:0 0 6px;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.grp div{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:6px 10px;font:inherit;font-size:14.5px;cursor:pointer;text-align:left;transition:background .25s var(--ease),border-color .25s var(--ease),color .25s var(--ease)}
+.chip b{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-3);margin-right:6px}
+.chip:hover{border-color:var(--ink-3)}
+.chip[aria-pressed="true"]{background:var(--core);border-color:var(--core);color:var(--paper)}
+.chip[aria-pressed="true"] b{color:var(--core-t)}
+.bar{display:flex;align-items:center;gap:12px;margin:22px 0 12px}
+.play{border:1px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 16px;font:inherit;font-size:15px;cursor:pointer}
+.play[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+.progress{flex:1;height:3px;background:var(--paper-3);border-radius:3px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--core);transition:width .5s var(--ease)}
+main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:30px;padding-bottom:44px;align-items:start}
+.stage{background:var(--paper-2);border-radius:22px;position:relative;overflow:hidden}
+svg{display:block;width:100%;height:auto}
+.cap{position:absolute;left:22px;right:22px;bottom:16px;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-2)}
+.panel h2{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(26px,2.4vw,34px);line-height:1.08;margin:6px 0 12px;letter-spacing:-.01em}
+.panel .no{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--core);letter-spacing:.06em}
+.panel .p{font-size:19px;margin:0 0 16px;max-width:60ch}
+.panel h3{font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin:18px 0 4px}
+.panel ul{margin:0;padding-left:20px;display:grid;gap:5px;max-width:62ch}
+.panel .why{margin:0;max-width:62ch;color:var(--ink-2)}
+.panel .ana{margin-top:20px;padding:14px 16px;border-radius:14px;background:var(--core-t)}
+.panel .ana b{display:block;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--core);margin-bottom:3px}
+.navrow{display:flex;gap:10px;margin-top:22px}
+.navrow button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 14px;font:inherit;font-size:15px;cursor:pointer}
+footer{border-top:1px solid var(--line);padding:16px 0 30px;color:var(--ink-3);font-size:14px}
+/* scene primitives */
+.f{fill:var(--paper);stroke:var(--ink-2);stroke-width:1.6}
+.md{fill:var(--paper);stroke:var(--core);stroke-width:2}
+.mdt{font-family:"JetBrains Mono",monospace;font-size:13px;fill:var(--core);font-weight:600}
+.dv{fill:none;stroke:var(--derived);stroke-width:1.8;stroke-dasharray:5 4}
+.dvt{font-family:"JetBrains Mono",monospace;font-size:12.5px;fill:var(--derived)}
+.lbl{font-family:"Atkinson Hyperlegible",sans-serif;font-size:15px;fill:var(--ink)}
+.sm{font-family:"JetBrains Mono",monospace;font-size:12px;fill:var(--ink-3)}
+.big{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:20px;fill:var(--ink)}
+.arr{fill:none;stroke:var(--ink-2);stroke-width:2;marker-end:url(#ah)}
+.arr-core{fill:none;stroke:var(--core);stroke-width:2.4;marker-end:url(#ahc)}
+.arr-bad{fill:none;stroke:var(--warn);stroke-width:2.4;marker-end:url(#ahw)}
+.in{opacity:0;animation:in .7s var(--ease) forwards}
+.draw{stroke-dasharray:var(--len,400);stroke-dashoffset:var(--len,400);animation:draw 1s var(--ease) forwards}
+.out{animation:out 1.2s var(--ease) forwards}
+.pulse{animation:pulse 2.4s var(--ease) infinite}
+.loopmove{animation:loopmove 3.6s linear infinite}
+.grow{transform-box:fill-box;transform-origin:left center;transform:scaleX(.08);animation:grow 3.6s var(--ease) infinite}
+.sweep{animation:sweep 3.2s var(--ease) infinite alternate}
+.blink{animation:blink 1.6s steps(2,start) infinite}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes out{to{opacity:.18}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes grow{0%{transform:scaleX(.08)}60%,100%{transform:scaleX(1)}}
+@keyframes sweep{from{transform:translateY(0)}to{transform:translateY(250px)}}
+@keyframes blink{to{visibility:hidden}}
+@media (max-width:1100px){nav.groups{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:900px){
+  .wrap{padding:0 16px}
+  main{grid-template-columns:1fr}
+  nav.groups{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lang{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .in,.draw,.out,.pulse,.loopmove,.grow,.sweep,.blink{animation:none!important;opacity:1!important;stroke-dashoffset:0!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="top">
+    <div>
+      <div class="kicker" data-i="kicker"></div>
+      <h1 data-i="h1"></h1>
+      <p class="lede" data-i="lede"></p>
+    </div>
+    <div class="lang" role="group" aria-label="Language">
+      <button data-lang="hu">Magyar</button>
+      <button data-lang="en">English</button>
+    </div>
+  </div>
+  <ul class="acr" id="acr"></ul>
+  <nav class="groups" id="groups" aria-label="Principles"></nav>
+  <div class="bar">
+    <button class="play" id="play" aria-pressed="false"></button>
+    <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+  </div>
+</header>
+
+<main>
+  <div class="stage">
+    <svg id="scene" viewBox="0 0 760 540" role="img" aria-live="polite">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="oklch(41% 0.02 40)"/></marker>
+        <marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="oklch(57% 0.17 33)"/></marker>
+        <marker id="ahw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="oklch(56% 0.18 25)"/></marker>
+      </defs>
+      <g id="sc"></g>
+    </svg>
+    <div class="cap" id="cap"></div>
+  </div>
+  <section class="panel" id="panel" aria-live="polite"></section>
+</main>
+
+<footer data-i="foot"></footer>
+</div>
+
+<script>
+const T={
+ hu:{
+  kicker:'PAROS · Personal Agentic Retrieval Operating System',
+  h1:'Egy mappa jegyzet, ami <em>gondolkodó</em> operációs rendszerré válik',
+  lede:'A PAROS egy módszer: a tudásod markdown-fájlokban él, és AI-agentek dolgoznak benne. Keresnek, rendet tartanak, és minden javításodból tanulnak. Válassz egy alapelvet, vagy indítsd el a bemutatót.',
+  acr:[['P','ersonal','Egy emberé. Egy író, alapból privát.'],['A','gentic','Agentek dolgoznak benne: olvasnak, keresnek, tanulnak.'],['R','etrieval','A tudás annyit ér, amennyit a jó pillanatban vissza tudsz hozni.'],['OS','','Réteg, nem alkalmazás: az életed minden területe erre épül.']],
+  groups:['Alap','Tudás','Látvány','Agentek','Keresés és kapcsolat','Biztonság és egészség'],
+  play:'Bemutató indítása',stop:'Bemutató megállítása',prev:'Előző',next:'Következő',
+  principle:'Alapelv',why:'Miért',practice:'A gyakorlatban',analogy:'Analógia',
+  foot:'A PAROS Advisor nyílt forrású: github.com/ExarLabs/paros-advisor. A rajzok egyszerűsítések; a pontos szöveg a repó principles/ mappájában van.'
+ },
+ en:{
+  kicker:'PAROS · Personal Agentic Retrieval Operating System',
+  h1:'A folder of notes that becomes a <em>thinking</em> operating system',
+  lede:'PAROS is a method: your knowledge lives in markdown files and AI agents work inside it. They find things, keep order, and learn from every correction you make. Pick a principle, or start the tour.',
+  acr:[['P','ersonal','One person. One writer, private by default.'],['A','gentic','Agents work in it: they read, search and learn.'],['R','etrieval','Knowledge is worth what you can bring back at the right moment.'],['OS','','A layer, not an app: every area of your life builds on it.']],
+  groups:['Foundation','Knowledge','View','Agents','Search and connection','Safety and health'],
+  play:'Start the tour',stop:'Stop the tour',prev:'Previous',next:'Next',
+  principle:'Principle',why:'Why',practice:'In practice',analogy:'Analogy',
+  foot:'The PAROS Advisor is open source: github.com/ExarLabs/paros-advisor. The drawings are simplifications; the exact wording lives in the repository\'s principles/ folder.'
+ }
+};
+const G=[0,0,1,2,3,3,3,4,5,4,1,1,5,0];
+const P=[
+ {id:'P00',g:0,
+  hu:{t:'Egy PAROS, egy ember; alkotmány és biztonsági határok',p:'Egy PAROS egy ember kihelyezett gondolkodása. Vannak szabályok, amiken semmilyen automatizmus, tanulás vagy agent nem lazíthat.',w:'Egy önmagát változtató rendszerben csak akkor bízhatsz, ha egy része önmaga által nem írható át.',x:['Biztonsági határok: küldés, publikálás, törlés, pénz, hitelesítő adat, külső írás. Mindig a gazda kifejezett igenje kell.','A fontos fájlok „Alkotmány" szakaszát csak a gazda írja; a tanulás nem nyúl hozzá.'],a:'Mint egy ország alkotmánya: a parlament (a tanulás) sok törvényt módosíthat, az alkotmányt nem.',c:'Az agent nekifut a határnak, és visszapattan.'},
+  en:{t:'One PAROS, one person; a constitution and safety boundaries',p:'A PAROS is one person\'s externalised thinking. Some rules cannot be loosened by any automation, learning or agent.',w:'A system that changes itself can only be trusted if part of it cannot be rewritten by itself.',x:['Safety boundaries: sending, publishing, deleting, money, credentials, writing to external systems. Always an explicit yes from the owner.','A "Constitution" section in important files is written only by the owner; learning never touches it.'],a:'Like a country\'s constitution: parliament (learning) can change many laws, but not the constitution.',c:'The agent runs into the boundary and bounces back.'}},
+ {id:'P01',g:1,
+  hu:{t:'A tudás markdownban (és JSON-ban) él; minden más származtatott',p:'A tudás forrása a markdown, mert ember és AI egyaránt olvassa és írja. Adatbázis, keresőindex, gyorsítótár, PDF: mind származtatott, és bármikor újraépíthető.',w:'A markdown nem öregszik, nem zár be egy alkalmazásba, és minden AI-modell olvassa. Ha az igazság adatbázisban élne, a tudásod egy eszköz foglya lenne.',x:['Minden fájl frontmatterrel kezdődik; a legfontosabb mező a description, ebből dönti el az agent, megéri-e megnyitni.','Beérkező eredetiből (PDF, táblázat, hang) markdown-kísérő készül, és onnan dolgozunk.'],a:'Mint a kotta és az előadás: a kotta az igazság, és minden előadás újrajátszható belőle.',c:'A származtatott elemek eltűnnek, majd a markdownból újraépülnek.'},
+  en:{t:'Knowledge lives in markdown (and JSON); everything else is derived',p:'The source of knowledge is markdown, because both people and AI read and write it. Databases, search indexes, caches and PDFs are derived and can be rebuilt at any time.',w:'Markdown does not age, does not lock you into an application, and every AI model reads it. If the truth lived in a database, your knowledge would be the prisoner of a tool.',x:['Every file starts with frontmatter; the key field is description, which tells an agent whether a file is worth opening.','Incoming originals (PDF, spreadsheet, audio) get a markdown companion, and work continues from it.'],a:'Like sheet music and performances: the score is the truth, and every performance can be replayed from it.',c:'The derived pieces vanish, then rebuild from the markdown.'}},
+ {id:'P02',g:2,
+  hu:{t:'A megjelenítés HTML: élő nézet, ami markdownba ír vissza',p:'Amit az ember néz, az HTML: weboldal, gráf, interaktív nézet. Markdownból olvas, és ha ír, markdownba ír; saját tudástára nincs.',w:'A markdown jó tárolásra, rossz áttekintésre. A HTML adja az áttekintést, a markdown marad az igazság.',x:['Élő nézet: magától frissül, és mutatja a forrását és frissességét.','Pillanatkép (PDF, deck): nem frissül, ezért dátum és forrás van rajta.'],a:'Mint a kirakat és a raktár: a kirakat szép, de az áru a raktárban van, és onnan pótolják.',c:'A markdownból nézet lesz; a nézetből a pipa visszaíródik a markdownba.'},
+  en:{t:'Presentation is HTML, a live view that writes back to markdown',p:'What people look at is HTML: a page, a graph, an interactive view. It reads from markdown and writes back to markdown; it has no knowledge store of its own.',w:'Markdown is good for storing and bad for overview. HTML gives the overview; markdown stays the truth.',x:['A live view updates itself and shows its source and freshness.','A snapshot (PDF, deck) does not update, so it carries its date and source.'],a:'Like a shop window and a storeroom: the window looks good, but the goods live in the storeroom.',c:'Markdown becomes a view; a tick in the view writes back to markdown.'}},
+ {id:'P03',g:3,
+  hu:{t:'Az agent nézőpont a vaulton, nem külön program',p:'Az agent egy nézőpont (például „emberek", „pénz", „marketing"). Egy fájlban él: térkép, szabályok, hozzáállás. Akkor kell, ha a nézőpont több területen átvág.',w:'A vault területek szerint tagolódik (függőlegesen), az agent keresztbe vág (vízszintesen). Kevés mély nézőpont kell, nem sok sekély szerep.',x:['A fő session felveheti a nézőpontot a fájl beolvasásával.','Külön futás csak hat okból éri meg: kontextus-védelem, párhuzamosság, függetlenség, felügyelet nélküli futás, olcsóbb modell, szűk jog.'],a:'Mint a szemüveg: ugyanazt a házat nézheted villanyszerelő- vagy vízvezeték-szerelő-szemmel; a ház ugyanaz.',c:'A területek oszlopok; a nézőpont vízszintesen végigpásztázza őket.'},
+  en:{t:'An agent is a viewpoint on the vault, not a separate program',p:'An agent is a viewpoint (for example "people", "money", "marketing"). It lives in one file: a map, rules and an attitude. You need one when a viewpoint cuts across several areas.',w:'A vault is organised by areas (vertical); an agent cuts across them (horizontal). A few deep viewpoints, not many shallow roles.',x:['The main session can take on a viewpoint by reading its file.','A separate run is worth it for six reasons only: context protection, parallelism, independence, unattended runs, a cheaper model, narrow permissions.'],a:'Like a pair of glasses: you can look at the same house as an electrician or as a plumber; the house is the same.',c:'Areas are columns; the viewpoint sweeps across them.'}},
+ {id:'P04',g:3,
+  hu:{t:'Vékony belépő, élő markdown-definíció',p:'Minden agent és skill két részből áll: egy vékony belépőből (név, mikor kell, hová mutat) és egy élő, verziózott definícióból a vaultban. A belépő mindig az élőt olvassa: a vault nyer.',w:'Ha a tudás a platform saját fájljaiban élne, nem tanulna, nem lenne verziózva, és platformváltáskor elveszne.',x:['Skill: CURRENT.md (élő definíció), LEARNINGS.md (napló), observations/ (tanulási inbox), versions/ (régi változatok).','Ami lépésekben leírható, az skill, nem agent-szöveg.'],a:'Mint a névjegy és az életrajz: a névjegy rövid és csak mutat; az életrajz él és bővül.',c:'A kis belépő mindig a nagy, élő dokumentumra mutat; a verziószám nő.'},
+  en:{t:'Thin entry point, live markdown definition',p:'Every agent and skill has a thin entry (name, when to use it, where it points) and a live, versioned definition in the vault. The entry always reads the live one: the vault wins.',w:'If the knowledge lived in the platform\'s own files, it would not learn, would not be versioned, and would be lost when you change platforms.',x:['A skill: CURRENT.md (live definition), LEARNINGS.md (log), observations/ (learning inbox), versions/ (old versions).','Anything that can be written as steps is a skill, not agent text.'],a:'Like a business card and a CV: the card is short and only points; the CV lives and grows.',c:'The small entry always points to the big, living document; the version number grows.'}},
+ {id:'P05',g:3,
+  hu:{t:'Zárt hurkú tanulás: a használat tanít, súlyozott tudással',p:'Minden interakció tanulási lehetőség. Amikor javítasz, elutasítasz vagy jobb utat mutatsz, az nem vész el: visszaépül a skillekbe. A tanult tudásnak súlya van, a használat erősíti vagy gyengíti.',w:'A rendszerek eddig vakok voltak a felhasználói visszajelzésre, vagy a hurok bezárása hónapokba és egy csapatba került. Itt a tanulság ott születik, ahol a munka, és perceken belül beépül.',x:['Észlelés: a futó agent tanulási csomagot ír (kontextus, tanulság, javasolt változás, bizonyíték).','Ellenőrzés: egy gondnok-nézőpont bizonyítékot kér; egy független bíra is megítéli; kód építi be.'],a:'Mint inas és mester: minden javításból tanul, és ami sokszor beválik, az beidegződik.',c:'Interakció, tanulság, ellenőrzés, és a szabály súlya megnő.'},
+  en:{t:'Closed-loop learning: use teaches, with weighted knowledge',p:'Every interaction is a chance to learn. When you correct, reject or show a better way, it does not disappear: it goes back into the skills. Learned knowledge has weight, and use strengthens or weakens it.',w:'Systems used to be blind to user feedback, or closing the loop took months and a team. Here the lesson is born where the work happens and is integrated within minutes.',x:['Detection: the running agent writes a learning packet (context, lesson, proposed change, evidence).','Review: a caretaker viewpoint requires evidence; an independent judge weighs in; code applies it.'],a:'Like an apprentice and a master: it learns from every correction, and what works often becomes habit.',c:'Interaction, lesson, review, and the rule\'s weight grows.'}},
+ {id:'P06',g:4,
+  hu:{t:'A keresés képesség, index elsőként',p:'A vaultban keresni egy képesség (skill), nem agent. Előbb egy friss, rangsorolt teljes szöveges index; a nyers fájlkeresés csak pontos szövegre és kódra.',w:'Nagy vaultban a nyers keresés lassú, zajos, és felemészti a kontextust. Mérve: az index sokkal gyakrabban hozza elsőnek a jó választ.',x:['A kérdésből 2-4 jellemző szótő lesz; a cím és a leírás többet ér, mint a törzs.','Ha sok fájlt kell együtt olvasni, egy kontextus-védő munkás csinálja és csak összegzést ad vissza.'],a:'Mint a könyvtári katalógus: nem járod végig a polcokat, hanem megnézed, hol van.',c:'Kérdés, index, és a legjobb találat kerül előre.'},
+  en:{t:'Search is a capability, index first',p:'Searching the vault is a capability (a skill), not an agent. First a fresh, ranked full-text index; raw file search only for exact strings and code.',w:'In a large vault raw search is slow, noisy and eats context. Measured: the index puts the right answer first far more often.',x:['Turn the question into 2 to 4 word stems; title and description weigh more than the body.','If many files must be read together, a context-protecting worker does it and returns a summary.'],a:'Like a library catalogue: you do not walk every shelf, you look it up.',c:'A question, the index, and the best hit rises to the top.'}},
+ {id:'P07',g:5,
+  hu:{t:'A titok a vaulton kívül él, titkosítva utazik, érték nélkül leltározzuk',p:'Minden kapcsolat egy titkon múlik (API-kulcs, token, jelszó). Az érték soha nem kerül a vaultba, a chatbe vagy az agent kontextusába; a vaultban csak a leltár van.',w:'A vault szinkronizál, indexelődik, és AI olvassa: ami oda kerül, az kiszivárgott. Agent-rendszerben ráadásul maga az agent is kiküldhetne egy titkot.',x:['Négy réteg: a gép titoktára, titkosított átviteli csomag, érték nélküli leltár, és a futásidejű betöltés.','Új titok = új leltársor (mire való, ki használja, milyen jogkör).'],a:'A kulcs nincs a lábtörlő alatt: a házban csak a kulcsok listája lóg, a kulcsok a széfben vannak.',c:'A kulcs kint marad a széfben; bent csak a lista látszik.'},
+  en:{t:'Secrets live outside the vault, travel encrypted, and are inventoried without values',p:'Every connector depends on a secret (API key, token, password). The value never goes into the vault, the chat or the agent\'s context; the vault only holds the inventory.',w:'The vault syncs, gets indexed and is read by AI: a secret placed there is a leaked secret. In an agent system the agent itself could even send it out.',x:['Four layers: the machine\'s keychain, an encrypted transfer bundle, an inventory without values, and loading at run time.','A new secret means a new inventory line (what for, who uses it, which scope).'],a:'The key is not under the doormat: inside the house hangs only the list of keys; the keys are in the safe.',c:'The key stays in the safe outside; inside only the list is visible.'}},
+ {id:'P08',g:4,
+  hu:{t:'Kapcsolatok: a SaaS a gerinc, az AI a ragasztó',p:'A külső szolgáltatásoknak (levél, naptár, tárhely, CRM, ERP) megvan a helyük, és az AI nem váltja ki őket. Együtt szupererő.',w:'A SaaS gyors, olcsó és determinisztikus; az AI lassabb és drágább, de érti a szándékot és összeköt. Mindegyik azt csinálja, amiben jó.',x:['A közös dolgok (a cég, a csapat) a közös eszközökben élnek; a PAROS connectoron át éri el őket.','Pull és publish tudatos lépés, soha nem automatikus.'],a:'Mint a csontváz és az ízületek: a SaaS a csont, ami tart; az AI az ízület, ami mozgat.',c:'Szolgáltatások körben; az AI szálakkal köti össze őket.'},
+  en:{t:'Connectors: SaaS is the backbone, AI is the glue',p:'External services (mail, calendar, storage, CRM, ERP) have their place, and AI does not replace them. Together they are a superpower.',w:'SaaS is fast, cheap and deterministic; AI is slower and costlier but understands intent and connects things. Each does what it is good at.',x:['Shared things (the company, the team) live in shared tools; PAROS reaches them through connectors.','Pull and publish are deliberate steps, never automatic.'],a:'Like bones and joints: SaaS is the bone that holds; AI is the joint that moves.',c:'Services in a circle; AI ties them together.'}},
+ {id:'P09',g:1,
+  hu:{t:'Felejtés: halványul, archiválódik, nem törlődik',p:'A markdown alig foglal helyet, ezért törölni nem kell. A tudás halványul, nem tűnik el; ami lezárult, archiválódik.',w:'A törölt tudás nem jön vissza, az archivált igen. Egy tanuló rendszerben a „régi" néha újra fontos lesz.',x:['A használatlan szabály súlyt veszít; az alvó szabály nem töltődik be, de megmarad.','Ami lezárult, Archive/ mappába kerül, dátummal és egy mondatnyi okkal.'],a:'Padlás, nem szemétégető: ami ma nem kell, felkerül, és bármikor lehozható.',c:'A fájlok elhalványulnak, és az archívumba vándorolnak; semmi nem tűnik el.'},
+  en:{t:'Forgetting: fade, archive, do not delete',p:'Markdown takes very little space, so deleting is not necessary. Knowledge fades, it does not vanish; what is finished is archived.',w:'Deleted knowledge does not come back; archived knowledge does. In a learning system "old" sometimes becomes important again.',x:['Unused rules lose weight; a dormant rule is no longer loaded but stays.','Finished things go to an Archive/ folder with a date and a one-sentence reason.'],a:'An attic, not an incinerator: what you do not need today goes up, and can come down any time.',c:'Files fade and move to the archive; nothing disappears.'}},
+ {id:'P10',g:1,
+  hu:{t:'Mentés: a szinkron nem mentés',p:'A szinkron arra való, hogy két helyen legyél egyszerre; a mentés arra, hogy visszamehess az időben. A szinkron a törlést, a hibás agent-írást vagy a zsarolóvírust is hűen lemásolja.',w:'Agent-rendszerben a gyors tömeges írás normális működés; egy rossz írás percek alatt minden gépre eljut.',x:['Csak azt mentsd, ami pótolhatatlan: a vault, a titokcsomag és a helyreállító kulcs, a session-átiratok, a saját média.','3-2-1: három másolat, kétféle hordozón, egy a házon kívül.'],a:'A tükör nem napló: a tükör a hibát is mutatja; a mentés időgép.',c:'A hibás írás végigmegy a szinkronon; a mentés pillanatképeiből visszaléphetsz.'},
+  en:{t:'Backup: sync is not backup',p:'Sync is for being in two places at once; backup is for going back in time. Sync faithfully copies a deletion, a bad agent write or a ransomware-encrypted file.',w:'In an agent system fast bulk writing is normal; one bad write reaches every machine in minutes.',x:['Back up only what cannot be replaced: the vault, the secrets bundle and recovery key, session transcripts, your own media.','3-2-1: three copies, two kinds of media, one off-site.'],a:'A mirror is not a diary: the mirror shows the mistake too; a backup is a time machine.',c:'A bad write spreads through sync; backup snapshots let you step back.'}},
+ {id:'P11',g:5,
+  hu:{t:'Nincs „működik" bizonyíték nélkül',p:'Egy folyamat akkor egészséges, ha egy valódi bemenet ténylegesen a várt kimenetet adja, nem akkor, ha fut, vagy ha a dokumentáció szerint létezik.',w:'Személyes agent-rendszerben a domináns hiba a néma hiba: egy index hónapokig nem frissül, és semmi nem jelez.',x:['Kanári: egy futás egyedi jelet ír egy jegyzetbe, a következő keresi az indexben. Ha megvan, az írás, a figyelés, az indexelés és a keresés is működik.','Súlyozott ellenőrzések: az index frissessége, a mentés kora, nincs titok a vaultban.'],a:'Mint a bányászkanári: amíg énekel, a levegő jó; ha elhallgat, azonnal tudod.',c:'Jel be, jel az indexben, zöld pipa.'},
+  en:{t:'No "it works" without proof',p:'A process is healthy when a real input actually produces the expected output, not when it is running or when the documentation says it exists.',w:'The dominant failure in a personal agent system is the silent one: an index does not refresh for months, and nothing signals it.',x:['Canary: one run writes a unique marker into a note; the next looks for it in the index. If found, writing, watching, indexing and search all work.','Weighted checks: index freshness, backup age, no plain secrets in the vault.'],a:'Like the canary in the coal mine: while it sings, the air is fine; when it stops, you know at once.',c:'Marker in, marker in the index, green tick.'}},
+ {id:'P12',g:0,
+  hu:{t:'Egy tény, egy gazda',p:'Minden ténynek pontosan egy hiteles helye van. Minden más előfordulás hivatkozás, vagy kifejezetten származtatott másolat (forrással és dátummal).',w:'Ha ugyanaz a tény két helyen él, előbb-utóbb elcsúsznak, és senki nem tudja, melyik igaz. Egy AI magabiztosan idézi mindkettőt.',x:['Egy forrástérkép megmondja adatfajtánként, mi a hiteles és mi a származtatott.','Az agentek listája egy helyen él; minden más dokumentum oda mutat.'],a:'Akinek két órája van, sosem tudja pontosan, mennyi az idő.',c:'Egy tény, egy gazda; a többi csak rámutat.'},
+  en:{t:'One fact, one owner',p:'Every fact has exactly one authoritative place. Every other occurrence is a reference, or an explicitly derived copy (with its source and date).',w:'If the same fact lives in two places, they drift apart sooner or later, and nobody knows which is true. An AI will confidently quote both.',x:['A source map says, per kind of data, what is authoritative and what is derived.','The list of agents lives in one place; other documents link to it.'],a:'A person with two watches never quite knows the time.',c:'One fact, one owner; the rest only point to it.'}}
+];
+
+/* ---------- scene builders ---------- */
+const NS='http://www.w3.org/2000/svg',sc=document.getElementById('sc');
+function el(t,a={},p=sc){const e=document.createElementNS(NS,t);for(const k in a){if(k==='text')e.textContent=a[k];else if(k==='style')e.setAttribute('style',a[k]);else e.setAttribute(k,a[k])}p.appendChild(e);return e}
+const d=(s)=>`animation-delay:${s}s`;
+function md(x,y,label,delay=0,cls='md'){const g=el('g',{class:'in',style:d(delay)});el('path',{d:`M${x},${y} h44 l14,14 v56 h-58 z`,class:cls},g);el('path',{d:`M${x+44},${y} v14 h14`,fill:'none',stroke:'oklch(57% 0.17 33)','stroke-width':2},g);el('text',{x:x+29,y:y+52,'text-anchor':'middle',class:'mdt',text:label},g);return g}
+function box(x,y,w,h,label,cls='f',delay=0,tcls='lbl'){const g=el('g',{class:'in',style:d(delay)});el('rect',{x,y,width:w,height:h,rx:12,class:cls},g);el('text',{x:x+w/2,y:y+h/2+5,'text-anchor':'middle',class:tcls,text:label},g);return g}
+function line(x1,y1,x2,y2,cls='arr',delay=0){const l=Math.hypot(x2-x1,y2-y1);return el('path',{d:`M${x1},${y1} L${x2},${y2}`,class:cls+' draw',style:`--len:${l};${d(delay)}`})}
+function curve(dd,cls='arr',delay=0,len=600){return el('path',{d:dd,class:cls+' draw',style:`--len:${len};${d(delay)}`})}
+function txt(x,y,s,cls='lbl',delay=0,anchor='middle'){return el('text',{x,y,'text-anchor':anchor,class:cls+' in',style:d(delay),text:s})}
+const L=()=>lang;
+
+const SCENES={
+ P00(){
+  el('circle',{cx:380,cy:250,r:150,fill:'none',stroke:'oklch(57% 0.17 33)','stroke-width':3,'stroke-dasharray':'2 0',class:'in'});
+  md(320,195,'vault.md',.2);md(380,215,'',.3);
+  const lab=lang==='hu'?['küldés','publikálás','törlés','pénz','titok','külső írás']:['send','publish','delete','money','secret','ext. write'];
+  lab.forEach((s,i)=>{const a=-Math.PI/2+i*Math.PI/3;txt(380+190*Math.cos(a),255+190*Math.sin(a),s,'sm',.4+i*.08)});
+  txt(380,140,lang==='hu'?'ALKOTMÁNY':'CONSTITUTION','sm',.3);
+  box(40,70,120,46,'agent','f',.5);
+  curve('M160,100 C240,110 250,150 245,170','arr-bad',.8,140);
+  curve('M245,175 C200,200 150,180 120,130','arr',1.6,170);
+  txt(140,175,lang==='hu'?'kell a gazda igenje':'needs the owner\'s yes','sm',2.2,'start');
+ },
+ P01(){
+  [0,1,2].forEach(i=>md(90,120+i*110,['note.md','task.md','data.json'][i],.1*i));
+  const der=[['index',430,110],['db',560,200],['cache',430,300],['pdf',560,390]];
+  der.forEach(([s,x,y],i)=>{const g=el('g',{class:'in',style:d(.8+i*.15)});el('rect',{x,y,width:110,height:60,rx:10,class:'dv'},g);el('text',{x:x+55,y:y+36,'text-anchor':'middle',class:'dvt',text:s},g);
+   setTimeout(()=>{g.classList.remove('in');g.classList.add('out')},2600+i*120);
+   setTimeout(()=>{g.classList.remove('out');g.style.animation='none';void g.offsetWidth;g.style.animation='';g.classList.add('in');g.style.animationDelay='0s'},4300+i*200);});
+  line(170,180,420,150,'arr-core',.5);line(170,290,420,330,'arr-core',.6);
+  txt(500,480,lang==='hu'?'törölhető, újraépül':'deletable, rebuilds','sm',1.2);
+  txt(120,480,lang==='hu'?'az igazság':'the truth','sm',.4);
+ },
+ P02(){
+  md(70,190,'tasks.md',.1);
+  line(140,225,300,225,'arr',.4);
+  const g=el('g',{class:'in',style:d(.6)});el('rect',{x:310,y:110,width:390,height:280,rx:14,class:'f'},g);el('rect',{x:310,y:110,width:390,height:34,rx:14,fill:'oklch(90.5% 0.018 75)'},g);
+  [0,1,2].forEach(i=>{el('circle',{cx:332+i*16,cy:127,r:5,fill:'oklch(85% 0.014 75)'},g)});
+  [0,1,2,3].forEach(i=>{el('rect',{x:340,y:170+i*50,width:24,height:24,rx:6,class:'f'},g);el('rect',{x:380,y:176+i*50,width:150+((i*53)%120),height:12,rx:6,fill:'oklch(85% 0.014 75)'},g)});
+  const tick=el('path',{d:'M345,183 l7,7 l13,-15',fill:'none',stroke:'oklch(54% 0.12 150)','stroke-width':3,class:'draw',style:'--len:40;animation-delay:1.6s'});
+  curve('M340,215 C250,300 170,300 120,270','arr-core',2.2,260);
+  txt(220,330,lang==='hu'?'visszaírás':'write back','sm',2.6);
+ },
+ P03(){
+  const areas=lang==='hu'?['Cég A','Cég B','Család','Média','Oktatás']:['Firm A','Firm B','Family','Media','Teaching'];
+  areas.forEach((s,i)=>{const x=60+i*135;box(x,60,115,46,s,'f',.05*i);el('rect',{x:x,y:120,width:115,height:340,rx:12,fill:'oklch(94.2% 0.014 75)',class:'in',style:d(.1*i)});[0,1,2,3,4].forEach(j=>{el('rect',{x:x+15,y:140+j*62,width:85,height:14,rx:7,fill:'oklch(85% 0.014 75)',class:'in',style:d(.2+.03*j)})})});
+  const s=el('g',{class:'sweep'});el('rect',{x:40,y:128,width:690,height:30,rx:15,fill:'oklch(57% 0.17 33 / .22)',stroke:'oklch(57% 0.17 33)','stroke-width':2},s);el('text',{x:385,y:149,'text-anchor':'middle',class:'mdt',text:lang==='hu'?'nézőpont: „emberek"':'viewpoint: "people"'},s);
+ },
+ P04(){
+  box(70,210,170,60,lang==='hu'?'belépő (5 sor)':'entry (5 lines)','f',.1);
+  const g=el('g',{class:'in',style:d(.5)});el('rect',{x:370,y:90,width:290,height:330,rx:14,class:'md'},g);el('text',{x:390,y:122,class:'mdt',text:'CURRENT.md'},g);
+  [0,1,2,3,4,5,6,7].forEach(i=>el('rect',{x:390,y:142+i*30,width:220-((i*37)%90),height:11,rx:5,fill:'oklch(92.5% 0.045 35)'},g));
+  line(240,240,365,240,'arr-core',.9);
+  const v=txt(615,122,'v1.0','mdt',.7);let n=0;v._t=setInterval(()=>{n++;v.textContent='v1.'+n;if(n>4)clearInterval(v._t)},700);timers.push(v._t);
+  txt(520,460,lang==='hu'?'a vault mindig nyer':'the vault always wins','sm',1.3);
+ },
+ P05(){
+  const pts=[[200,130,lang==='hu'?'interakció':'interaction'],[560,130,lang==='hu'?'tanulság':'lesson'],[560,360,lang==='hu'?'ellenőrzés':'review'],[200,360,lang==='hu'?'szabály':'rule']];
+  pts.forEach(([x,y,s],i)=>box(x-80,y-28,160,56,s,i===3?'md':'f',.15*i));
+  curve('M280,130 L480,130','arr',.6,200);curve('M560,158 L560,332','arr',.8,180);curve('M480,360 L280,360','arr',1,200);curve('M200,332 L200,158','arr-core',1.2,180);
+  const r=el('g',{class:'in',style:d(1.4)});el('rect',{x:140,y:420,width:240,height:14,rx:7,fill:'oklch(90.5% 0.018 75)'},r);el('rect',{x:140,y:420,width:240,height:14,rx:7,fill:'oklch(57% 0.17 33)',class:'grow'},r);
+  txt(260,460,lang==='hu'?'súly: csíra, hajtás, erős, gyökér':'weight: seed, sprout, strong, root','sm',1.5);
+  const dot=el('circle',{r:8,fill:'oklch(57% 0.17 33)'});
+  const path='M200,130 L560,130 L560,360 L200,360 Z';const p=el('path',{d:path,fill:'none',stroke:'none'});const len=p.getTotalLength();
+  let t0=performance.now();const f=(now)=>{if(!dot.isConnected)return;const u=((now-t0)/3600)%1;const pt=p.getPointAtLength(len*u);dot.setAttribute('cx',pt.x);dot.setAttribute('cy',pt.y);requestAnimationFrame(f)};if(!reduce)requestAnimationFrame(f);
+ },
+ P06(){
+  box(60,70,280,54,lang==='hu'?'„késedelmes fizetők"':'"late payers"','f',.1);
+  line(200,124,200,180,'arr',.4);
+  const items=lang==='hu'?['kintlevoseg-szabaly.md','vevo-limitek.md','meeting-10-09.md','arlista-2026.md']:['receivables-policy.md','credit-limits.md','meeting-10-09.md','pricelist-2026.md'];
+  items.forEach((s,i)=>{const g=el('g',{class:'in',style:d(.6+i*.15)});el('rect',{x:60,y:190+i*62,width:420,height:48,rx:10,class:i===0?'md':'f'},g);el('text',{x:80,y:220+i*62,class:i===0?'mdt':'sm',text:(i+1)+'. '+s},g);el('rect',{x:360,y:208+i*62,width:100-i*22,height:12,rx:6,fill:i===0?'oklch(57% 0.17 33)':'oklch(85% 0.014 75)'},g)});
+  txt(600,230,'index','big',.3);txt(600,258,lang==='hu'?'cím és leírás':'title and description','sm',.4);txt(600,280,lang==='hu'?'többet nyom':'weigh more','sm',.45);
+  txt(600,350,'grep','big',.8);txt(600,378,lang==='hu'?'csak pontos szöveghez':'exact strings only','sm',.9);
+ },
+ P07(){
+  el('rect',{x:60,y:80,width:360,height:380,rx:18,fill:'oklch(94.2% 0.014 75)',class:'in'});txt(240,115,'vault','big',.1);
+  const rows=lang==='hu'?['crm: olvasás, gép A','levél: küldés tilos','felhő: csak site X']:['crm: read, machine A','mail: no sending','cloud: site X only'];
+  rows.forEach((s,i)=>{box(90,150+i*70,300,48,s+'  ••••','f',.3+i*.1,'sm')});
+  const g=el('g',{class:'in',style:d(.6)});el('rect',{x:500,y:170,width:190,height:190,rx:16,class:'f'},g);el('circle',{cx:595,cy:265,r:34,fill:'none',stroke:'oklch(41% 0.02 40)','stroke-width':3},g);el('path',{d:'M595,231 v-12 M595,311 v12 M561,265 h-12 M629,265 h12',stroke:'oklch(41% 0.02 40)','stroke-width':3},g);
+  txt(595,390,lang==='hu'?'széf (a gépen)':'safe (on the machine)','sm',.8);
+  const k=el('g',{class:'in pulse',style:d(1)});el('circle',{cx:595,cy:265,r:9,fill:'oklch(57% 0.17 33)'},k);
+  txt(240,500,lang==='hu'?'leltár érték nélkül':'inventory, no values','sm',1.2);
+ },
+ P08(){
+  const sv=lang==='hu'?['levél','naptár','tárhely','CRM','ERP','táblázat']:['mail','calendar','storage','CRM','ERP','sheets'];
+  sv.forEach((s,i)=>{const a=-Math.PI/2+i*Math.PI/3,x=380+190*Math.cos(a),y=255+170*Math.sin(a);box(x-60,y-24,120,48,s,'f',.08*i);curve(`M380,255 L${x},${y}`,'arr-core',.6+i*.1,200)});
+  const c=el('g',{class:'in',style:d(.3)});el('circle',{cx:380,cy:255,r:46,class:'md'},c);el('text',{x:380,y:262,'text-anchor':'middle',class:'big',text:'AI'},c);
+  txt(380,505,lang==='hu'?'SaaS: gyors, olcsó, determinisztikus · AI: érti a szándékot':'SaaS: fast, cheap, deterministic · AI: understands intent','sm',1.4);
+ },
+ P09(){
+  const files=['2024-q1.md','old-plan.md','idea-x.md','meeting.md'];
+  files.forEach((s,i)=>{const g=md(80+i*140,90,s.slice(0,7),.1*i);setTimeout(()=>{g.classList.remove('in');g.style.opacity='1';void g.getBoundingClientRect();g.style.transition='transform 1.4s cubic-bezier(.22,1,.36,1), opacity 1.4s';g.style.transform=`translate(${(300-(80+i*140))}px,${260}px) scale(.7)`;g.style.opacity='.55'},1200+i*350)});
+  const a=el('g',{class:'in',style:d(.6)});el('rect',{x:250,y:340,width:260,height:130,rx:14,class:'f'},a);el('text',{x:380,y:450,'text-anchor':'middle',class:'big',text:'Archive/'},a);
+  txt(380,510,lang==='hu'?'dátummal és egy mondatnyi okkal; semmi nem vész el':'with a date and a reason; nothing is lost','sm',2.8);
+ },
+ P10(){
+  box(50,80,150,56,lang==='hu'?'A gép':'machine A','f',.1);box(50,220,150,56,lang==='hu'?'B gép':'machine B','f',.15);
+  curve('M200,108 C240,150 240,200 200,248','arr',.3,180);txt(270,170,'sync','sm',.4);
+  const bad=el('g',{class:'in',style:d(.9)});el('text',{x:125,y:300,'text-anchor':'middle',class:'mdt',fill:'oklch(56% 0.18 25)',text:lang==='hu'?'hibás írás mindkettőn':'bad write on both'},bad);
+  [0,1,2,3].forEach(i=>{const g=el('g',{class:'in',style:d(1.2+i*.25)});el('rect',{x:440+i*18,y:110+i*30,width:220,height:70,rx:12,class:'f'},g);el('text',{x:460+i*18,y:150+i*30,class:'sm',text:['10-07 23:00','10-08 23:00','10-09 23:00','10-10 23:00'][i]},g)});
+  curve('M200,250 C300,330 360,330 430,300','arr-core',1,260);
+  curve('M440,380 C340,420 250,380 200,290','arr',2.6,280);txt(320,445,lang==='hu'?'vissza az időben':'back in time','sm',2.9);
+  txt(560,470,'3-2-1','big',1.6);
+ },
+ P11(){
+  md(80,180,'note.md',.1);
+  const m=txt(110,300,'#canary-7f3a','mdt',.4);
+  line(150,215,330,215,'arr',.7);box(340,180,150,70,'index','f',.9);
+  line(490,215,600,215,'arr',1.3);
+  const ok=el('g',{class:'in',style:d(1.6)});el('circle',{cx:650,cy:215,r:38,fill:'oklch(54% 0.12 150 / .15)',stroke:'oklch(54% 0.12 150)','stroke-width':2},ok);el('path',{d:'M632,216 l12,12 l22,-26',fill:'none',stroke:'oklch(54% 0.12 150)','stroke-width':4},ok);
+  txt(380,360,lang==='hu'?'írás, figyelés, indexelés, keresés: mind igazolva':'writing, watching, indexing, search: all proven','sm',1.9);
+  txt(380,400,lang==='hu'?'a futó folyamat nem bizonyíték':'a running process is not proof','sm',2.2);
+ },
+ P12(){
+  const c=el('g',{class:'in',style:d(.2)});el('rect',{x:300,y:200,width:180,height:80,rx:14,class:'md'},c);el('text',{x:390,y:236,'text-anchor':'middle',class:'mdt',text:lang==='hu'?'ár: 39 €/óra':'rate: 39 €/h'},c);el('text',{x:390,y:260,'text-anchor':'middle',class:'sm',text:lang==='hu'?'gazda: ratecard.md':'owner: ratecard.md'},c);
+  [[90,80],[600,80],[90,380],[600,380]].forEach(([x,y],i)=>{box(x,y,150,52,lang==='hu'?'hivatkozás':'reference','f',.5+i*.12,'sm');curve(`M${x+75},${y+(y<200?52:0)} L${390+(x<300?-60:60)},${y<200?200:280}`,'arr',.8+i*.12,220)});
+  txt(390,500,lang==='hu'?'egy hiteles hely; a többi csak mutat':'one authoritative place; the rest only points','sm',1.5);
+ }
+};
+
+/* ---------- app ---------- */
+let lang=(new URLSearchParams(location.search).get('lang'))||((navigator.language||'en').toLowerCase().startsWith('hu')?'hu':'en');
+let cur=1,touring=null,timers=[];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function i18n(){
+ document.documentElement.lang=lang;document.title=lang==='hu'?'PAROS: így működik':'PAROS: how it works';
+ document.querySelectorAll('[data-i]').forEach(e=>e.innerHTML=T[lang][e.dataset.i]);
+ document.getElementById('acr').innerHTML=T[lang].acr.map(([a,b,c])=>`<li><b><span>${a}</span>${b}</b>${c}</li>`).join('');
+ const gw=document.getElementById('groups');
+ gw.innerHTML=T[lang].groups.map((g,gi)=>`<div class="grp"><h4>${g}</h4><div>${P.map((p,i)=>p.g===gi?`<button class="chip" data-i2="${i}" aria-pressed="${i===cur}"><b>${p.id}</b>${short(p[lang].t)}</button>`:'').join('')}</div></div>`).join('');
+ gw.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{stopTour();show(+b.dataset.i2)}));
+ document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));
+ document.getElementById('play').textContent=touring?T[lang].stop:T[lang].play;
+ show(cur,true);
+}
+function short(t){return t.split(/[;:,]/)[0]}
+function show(i,keepTour){
+ cur=i;timers.forEach(clearInterval);timers=[];
+ const p=P[i],x=p[lang],t=T[lang];
+ document.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.i2===i)));
+ sc.innerHTML='';SCENES[p.id]();
+ document.getElementById('cap').textContent=x.c;
+ document.getElementById('panel').innerHTML=`<div class="no">${p.id} · ${t.groups[p.g]}</div><h2>${x.t}</h2><p class="p">${x.p}</p>
+  <h3>${t.why}</h3><p class="why">${x.w}</p><h3>${t.practice}</h3><ul>${x.x.map(s=>`<li>${s}</li>`).join('')}</ul>
+  <div class="ana"><b>${t.analogy}</b>${x.a}</div>
+  <div class="navrow"><button id="pv">${t.prev}</button><button id="nx">${t.next}</button></div>`;
+ document.getElementById('pv').onclick=()=>{stopTour();show((i+P.length-1)%P.length)};
+ document.getElementById('nx').onclick=()=>{stopTour();show((i+1)%P.length)};
+ document.getElementById('prog').style.width=((i+1)/P.length*100)+'%';
+}
+function stopTour(){if(touring){clearInterval(touring);touring=null;const b=document.getElementById('play');b.setAttribute('aria-pressed','false');b.textContent=T[lang].play}}
+document.getElementById('play').addEventListener('click',e=>{
+ if(touring){stopTour();return}
+ const b=e.currentTarget;b.setAttribute('aria-pressed','true');b.textContent=T[lang].stop;
+ show(0);touring=setInterval(()=>{if(cur>=P.length-1){stopTour();return}show(cur+1)},9000);
+});
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{lang=b.dataset.lang;i18n()}));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){stopTour();show((cur+1)%P.length)}if(e.key==='ArrowLeft'){stopTour();show((cur+P.length-1)%P.length)}});
+i18n();
+</script>
+</body>
+</html>
